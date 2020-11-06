@@ -1,0 +1,83 @@
+.squares,
+.pieces {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+.pieces {
+    z-index: 1;
+    grid-template-areas: 
+        ". a2 . a4 . a6 . a8"
+        "b1 . b3 . b5 . b7 ."
+        ". c2 . c4 . c6 . c8"
+        ". . . . . . . ."
+        ". . . . . . . ."
+        "f1 . f3 . f5 . f7 ."
+        ". g2 . g4 . g6 . g8"
+        "h1 . h3 . h5 . h7 .";
+}
+
+.piece {
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 50%;
+    align-self: center;
+    justify-self: center;
+}
+
+.square {
+    height: 100%;
+    width: 100%;
+}
+
+.square[data-color="dark"] {background-color: hsl(0, 3%, 12%);}
+.square[data-color="light"] {background-color: hsl(39, 68%, 79%);}
+
+
+.piece[data-color="red"]{background-color: red;}
+.piece[data-color="blue"]{background-color: blue;}
+
+/*red*/
+.a2 {grid-area: a2;}
+.a4 {grid-area: a4;}
+.a6 {grid-area: a6;}
+.a8 {grid-area: a8;}
+
+.b1 {grid-area: b1;}
+.b3 {grid-area: b3;}
+.b5 {grid-area: b5;}
+.b7 {grid-area: b7;}
+
+.c2 {grid-area: c2;}
+.c4 {grid-area: c4;}
+.c6 {grid-area: c6;}
+.c8 {grid-area: c8;}
+
+/*blue*/
+.f1 {grid-area: f1;}
+.f3 {grid-area: f3;}
+.f5 {grid-area: f5;}
+.f7 {grid-area: f7;}
+
+.g2 {grid-area: g2;}
+.g4 {grid-area: g4;}
+.g6 {grid-area: g6;}
+.g8 {grid-area: g8;}
+
+.h1 {grid-area: h1;}
+.h3 {grid-area: h3;}
+.h5 {grid-area: h5;}
+.h7 {grid-area: h7;}
+
+@media only screen and (min-width: 1000px) and (min-height: 800px) {
+    .piece {
+        height: 5rem;
+        width: 5rem;
+    }
+}

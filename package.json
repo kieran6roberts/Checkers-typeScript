@@ -1,0 +1,11 @@
+{
+  "name": "checkers-game",
+  "version": "1.0.0",
+  "description": "checkers board game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kieran Roberts",
+  "license": "ISC"
+}
