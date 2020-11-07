@@ -1,3 +1,24 @@
+:root {
+    --piece1-clr: red;
+    --piece2-clr: blue;
+    --sqr1-clr: hsl(0, 3%, 12%);
+    --sqr2-clr:  hsl(39, 68%, 79%);
+    --piece1-hover: rgb(197, 6, 6);
+    --piece2-hover: rgb(11, 11, 175);
+}
+
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    overflow-y: scroll;
+}
+
 .squares,
 .pieces {
     display: grid;
@@ -8,6 +29,7 @@
     left: 0;
     height: 100vh;
     width: 100%;
+    pointer-events: none;
 }
 
 .pieces {
@@ -29,19 +51,27 @@
     border-radius: 50%;
     align-self: center;
     justify-self: center;
+    pointer-events: all;
 }
+
+.piece[data-color="blue"]:hover {background-color: var(--piece2-hover);}
+.piece[data-color="red"]:hover {background-color: var(--piece1-hover);}
 
 .square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
     width: 100%;
+    pointer-events: all;
 }
 
-.square[data-color="dark"] {background-color: hsl(0, 3%, 12%);}
-.square[data-color="light"] {background-color: hsl(39, 68%, 79%);}
+.square[data-color="dark"] {background-color: var(--sqr1-clr)}
+.square[data-color="light"] {background-color: var(--sqr2-clr)}
 
 
-.piece[data-color="red"]{background-color: red;}
-.piece[data-color="blue"]{background-color: blue;}
+.piece[data-color="red"] {background-color: var(--piece1-clr)}
+.piece[data-color="blue"] {background-color: var(--piece2-clr)}
 
 /*red*/
 .a2 {grid-area: a2;}
@@ -75,9 +105,19 @@
 .h5 {grid-area: h5;}
 .h7 {grid-area: h7;}
 
+/* utility classes */
+.fade {
+    opacity: 30%;
+}
+
+/* drag over */
+.overSquare {
+    opacity: 60%;
+}
+
 @media only screen and (min-width: 1000px) and (min-height: 800px) {
     .piece {
         height: 5rem;
         width: 5rem;
     }
-}
+};
