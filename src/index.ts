@@ -21,7 +21,7 @@ const BOARD_STATE = [
 
 let selectedPiece = {
   id: "-1",
-  index: "-1",
+  index: -1,
   isPieceKing: false,
   moveToSeventh: false,
   moveToNinth: false,
@@ -37,8 +37,8 @@ const setCurrentPieceHandler = (event: Event) => {
   const activePieceID = (<HTMLElement>event.target).id;
   const activePieceBoardPosition = BOARD_STATE.indexOf(activePieceID);
   selectedPiece.id = activePieceID;
-  selectedPiece.index = activePieceBoardPosition.toString();
-  console.log(selectedPiece);
+  selectedPiece.index = activePieceBoardPosition;
+  setValidMoves();
 
 };
 
@@ -46,12 +46,46 @@ const initPlayerPieces = (player: PLAYERS) => {
   console.log("init player pieces");
   if (player === PLAYER1) {
     redPieces.forEach(piece => piece.addEventListener("click", event => setCurrentPieceHandler(event)));
-    redPieces.forEach(piece => piece.addEventListener("dragstart", event => setCurrentPieceHandler(event)));
+    //redPieces.forEach(piece => piece.addEventListener("dragstart", event => setCurrentPieceHandler(event)));
   }
   else if (player === PLAYER2) {
     bluePieces.forEach(piece => piece.addEventListener("click", event => setCurrentPieceHandler(event)));
-    bluePieces.forEach(piece => piece.addEventListener("dragstart", event => setCurrentPieceHandler(event)));
+    //bluePieces.forEach(piece => piece.addEventListener("dragstart", event => setCurrentPieceHandler(event)));
   }
+};
+
+const toggleValidMoveSquare = (element: Element): void => {
+  element.classList.add("valid-drop");
+};
+
+const setValidMoves = (): void => {
+  const pIndex = selectedPiece.index;
+  if (BOARD_STATE[pIndex + 7] === null) {
+    selectedPiece.moveToSeventh = true;
+    console.log(squares[pIndex + 7]);
+    toggleValidMoveSquare(squares[pIndex + 7]);
+  }
+  if (BOARD_STATE[pIndex + 9] === null) {
+    selectedPiece.moveToNinth = true;
+    console.log(squares[pIndex + 9]);
+    toggleValidMoveSquare(squares[pIndex + 9]);
+  }
+  if (BOARD_STATE[pIndex - 7] === null) {
+    selectedPiece.moveToNinth = true;
+    console.log(squares[pIndex - 7]);
+    toggleValidMoveSquare(squares[pIndex - 7]);
+  }
+  if (BOARD_STATE[pIndex - 9] === null) {
+    selectedPiece.moveToNinth = true;
+    console.log(squares[pIndex - 9]);
+    toggleValidMoveSquare(squares[pIndex - 9]);
+  }
+
+  console.log(selectedPiece);
+};
+
+const movePieceHandler = () => {
+
 };
 
 initPlayerPieces(PLAYER1);
