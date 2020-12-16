@@ -4,7 +4,7 @@
   "description": "checkers board game",
   "main": "index.js",
   "scripts": {
-    "start": "rm -rf dist && webpack --config webpack.config.js && webpack serve"
+    "start": "rm -rf dist && webpack --config webpack.config.js && webpack serve --watch"
   },
   "author": "Kieran Roberts",
   "license": "ISC",

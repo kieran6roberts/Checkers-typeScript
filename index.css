@@ -1,7 +1,7 @@
 :root {
     --piece1-clr: red;
     --piece2-clr: blue;
-    --sqr1-clr: hsl(0, 3%, 12%);
+    --sqr1-clr: hsl(29, 78%, 18%);
     --sqr2-clr:  hsl(39, 68%, 79%);
     --piece1-hover: rgb(197, 6, 6);
     --piece2-hover: rgb(11, 11, 175);
