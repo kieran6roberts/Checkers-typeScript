@@ -23,6 +23,7 @@ const BOARD_STATE = [
   "h1", null, "h3", null, "h5", null, "h7", null,
 ];
 
+let currentPlayer: PLAYERS;
 let selectedPiece = {
   id: "-1",
   index: -1,
@@ -56,11 +57,15 @@ const setDragInitHandler = (event: DragEvent) => {
 const initPlayerPieces = (player: PLAYERS) => {
   console.log("init player pieces");
   if (player === PLAYER1) {
-    redPieces.forEach(piece => piece.addEventListener("click", (event) => setCurrentPieceHandler(event)));
+    currentPlayer = PLAYER1;
+    bluePieces.forEach(piece => piece.removeEventListener("click", setCurrentPieceHandler));
+    redPieces.forEach(piece => piece.addEventListener("click", setCurrentPieceHandler));
     //redPieces.forEach(piece => piece.addEventListener("dragstart", (event: any) => setDragInitHandler(event)));
   }
   else if (player === PLAYER2) {
-    bluePieces.forEach(piece => piece.addEventListener("click", (event) => setCurrentPieceHandler(event)));
+    currentPlayer = PLAYER2;
+    redPieces.forEach(piece => piece.removeEventListener("click", setCurrentPieceHandler));
+    bluePieces.forEach(piece => piece.addEventListener("click", setCurrentPieceHandler));
     //bluePieces.forEach(piece => piece.addEventListener("dragstart", (event: any) => setDragInitHandler(event)));
   }
 };
@@ -125,6 +130,11 @@ const movePieceWithDragHandler = (event: any) => {
   toggleMoveToSquareHandler([...listenerElements], MOVE_RESET);
 };*/
 
+const changePlayerTurn = () => {
+  if (currentPlayer === PLAYER1) initPlayerPieces(PLAYER2);
+  else initPlayerPieces(PLAYER1);
+};
+
 const movePieceWithClickHandler = (event: any) => {
   console.log("moved piece with click");
   const activePiece = document.querySelector(`#${selectedPiece.id}`) as HTMLElement;
@@ -135,6 +145,7 @@ const movePieceWithClickHandler = (event: any) => {
   listenerElements.forEach(element => toggleValidMoveSquare(element));
   toggleMoveToSquareHandler([...listenerElements], MOVE_RESET);
   resetSelectedPiece();
+  changePlayerTurn();
 };
 
 initPlayerPieces(PLAYER1);
