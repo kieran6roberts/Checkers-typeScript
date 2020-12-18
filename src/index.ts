@@ -92,29 +92,34 @@ const toggleValidMoveSquare = (element: Element): void => {
 };
 
 const setValidMoves = (): void => {
-  const pIndex = selectedPiece.index;
-  if (BOARD_STATE[pIndex + 7] === null) {
-    const validElement = squares[pIndex + 7];
-    toggleValidMoveSquare(validElement);
-    toggleMoveToSquareHandler(validElement ,MOVE_ENABLE);
-  }
-  if (BOARD_STATE[pIndex + 9] === null) {
-    const validElement = squares[pIndex + 9];
-    toggleValidMoveSquare(validElement);
-    toggleMoveToSquareHandler(validElement ,MOVE_ENABLE);
-  }
-  if (BOARD_STATE[pIndex - 7] === null) {
-    const validElement = squares[pIndex - 7];
-    toggleValidMoveSquare(validElement);
-    toggleMoveToSquareHandler(validElement ,MOVE_ENABLE);
-  }
-  if (BOARD_STATE[pIndex - 9] === null) {
-    const validElement = squares[pIndex - 9];
-    toggleValidMoveSquare(validElement);
-    toggleMoveToSquareHandler(validElement ,MOVE_ENABLE);
-  }
+  const PIECE_INDEX = selectedPiece.index;
+  const LIGHT = "light";
 
-  console.log(selectedPiece);
+  const checkForEmptySquare = (num: number) => {
+    console.log(squares[PIECE_INDEX + num].hasChildNodes());
+    if (BOARD_STATE[PIECE_INDEX + num] === null && !squares[PIECE_INDEX + num].hasChildNodes()) {
+      return true;
+    } else return false;
+  };
+
+  const checkForLightColoredSquare = (num: number) => squares[PIECE_INDEX + num].getAttribute("data-color") === LIGHT ? true : false;
+
+  if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) {
+    toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
+    toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE_ENABLE);
+  }
+  if (checkForEmptySquare(9) && checkForLightColoredSquare(9)) {
+    toggleValidMoveSquare(squares[PIECE_INDEX + 9]);
+    toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE_ENABLE);
+  }
+  if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
+    toggleValidMoveSquare(squares[PIECE_INDEX - 7]);
+    toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE_ENABLE);
+  }
+  if (checkForEmptySquare(-9) && checkForLightColoredSquare(-9)) {
+    toggleValidMoveSquare(squares[PIECE_INDEX - 9]);
+    toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE_ENABLE);
+  }
 };
 
 /*
@@ -137,9 +142,10 @@ const changePlayerTurn = () => {
 
 const movePieceWithClickHandler = (event: any) => {
   console.log("moved piece with click");
+  const target: HTMLElement = event.currentTarget;
   const activePiece = document.querySelector(`#${selectedPiece.id}`) as HTMLElement;
   activePiece.remove();
-  event.currentTarget.appendChild(activePiece);
+  target.appendChild(activePiece);
 
   const listenerElements = document.querySelectorAll(".valid-drop");
   listenerElements.forEach(element => toggleValidMoveSquare(element));
