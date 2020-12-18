@@ -91,12 +91,16 @@ const toggleValidMoveSquare = (element: Element): void => {
   element.classList.toggle("valid-drop");
 };
 
+const updateBoardState = ( newState: number ) => {
+  BOARD_STATE[selectedPiece.index] = null;
+  BOARD_STATE[newState] = selectedPiece.id;
+};
+
 const setValidMoves = (): void => {
   const PIECE_INDEX = selectedPiece.index;
   const LIGHT = "light";
 
   const checkForEmptySquare = (num: number) => {
-    console.log(squares[PIECE_INDEX + num].hasChildNodes());
     if (BOARD_STATE[PIECE_INDEX + num] === null && !squares[PIECE_INDEX + num].hasChildNodes()) {
       return true;
     } else return false;
@@ -140,18 +144,25 @@ const changePlayerTurn = () => {
   else initPlayerPieces(PLAYER1);
 };
 
-const movePieceWithClickHandler = (event: any) => {
-  console.log("moved piece with click");
-  const target: HTMLElement = event.currentTarget;
-  const activePiece = document.querySelector(`#${selectedPiece.id}`) as HTMLElement;
-  activePiece.remove();
-  target.appendChild(activePiece);
 
+const resetSettings = () => {
   const listenerElements = document.querySelectorAll(".valid-drop");
   listenerElements.forEach(element => toggleValidMoveSquare(element));
   toggleMoveToSquareHandler([...listenerElements], MOVE_RESET);
   resetSelectedPiece();
   changePlayerTurn();
+};
+
+const movePieceWithClickHandler = (event: any) => {
+  const newIndex = parseInt(event.target.id);
+  console.log("moved piece with click");
+  const activePiece = document.querySelector(`#${selectedPiece.id}`) as HTMLElement;
+  activePiece.remove();
+  const target: HTMLElement = event.currentTarget;
+  target.appendChild(activePiece);
+  updateBoardState(newIndex);
+  console.log(BOARD_STATE);
+  resetSettings();
 };
 
 initPlayerPieces(PLAYER1);
