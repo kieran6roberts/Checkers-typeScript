@@ -72,7 +72,7 @@ const initPlayerPieces = (player: PLAYERS) => {
 
 const toggleMoveToSquareHandler = (element: ELEMENTS, mode: MOVES) => {
   if (Array.isArray(element)) {
-    element.forEach(el => el.removeEventListener("click", movePieceWithClickHandler));
+    element.forEach(el => el.removeEventListener("click", movePieceWithClickHandler);
     //element.forEach(el => el.removeEventListener("drop", movePieceWithDragHandler));
   }
   else {
@@ -108,7 +108,21 @@ const setValidMoves = (): void => {
 
   const checkForLightColoredSquare = (num: number) => squares[PIECE_INDEX + num].getAttribute("data-color") === LIGHT ? true : false;
 
-  if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) {
+  const checkForOpponentJump = (num: number) => {
+    switch (currentPlayer) {
+    case PLAYER1:     
+      if (squares[PIECE_INDEX + num].firstElementChild?.getAttribute("data-color") === "blue") return true;
+      else return false;
+        
+    case PLAYER2: 
+      if (squares[PIECE_INDEX + num].firstElementChild?.getAttribute("data-color") === "blue") return true;
+      else return false;
+    default:
+      throw new Error("problem with current player not set correctly!");
+    }
+  };
+
+  if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
     toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
     toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE_ENABLE);
   }
@@ -153,14 +167,14 @@ const resetSettings = () => {
   changePlayerTurn();
 };
 
-const movePieceWithClickHandler = (event: any) => {
-  const newIndex = parseInt(event.target.id);
+const movePieceWithClickHandler = (event: MouseEvent) => {
   console.log("moved piece with click");
+  const newIndex = (<HTMLElement>event.target).id;
   const activePiece = document.querySelector(`#${selectedPiece.id}`) as HTMLElement;
   activePiece.remove();
-  const target: HTMLElement = event.currentTarget;
+  const target: any = event.currentTarget;
   target.appendChild(activePiece);
-  updateBoardState(newIndex);
+  updateBoardState(parseInt(newIndex));
   console.log(BOARD_STATE);
   resetSettings();
 };
