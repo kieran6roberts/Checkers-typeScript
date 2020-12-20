@@ -55,14 +55,15 @@ const setDragInitHandler = (event: DragEvent) => {
 };*/
 
 const initPlayerPieces = (player: PLAYERS) => {
-  console.log("init player pieces");
   if (player === PLAYER1) {
+    console.log("init red player pieces");
     currentPlayer = PLAYER1;
     bluePieces.forEach(piece => piece.removeEventListener("click", setCurrentPieceHandler));
     redPieces.forEach(piece => piece.addEventListener("click", setCurrentPieceHandler));
     //redPieces.forEach(piece => piece.addEventListener("dragstart", (event: any) => setDragInitHandler(event)));
   }
   else if (player === PLAYER2) {
+    console.log("init blue player pieces");
     currentPlayer = PLAYER2;
     redPieces.forEach(piece => piece.removeEventListener("click", setCurrentPieceHandler));
     bluePieces.forEach(piece => piece.addEventListener("click", setCurrentPieceHandler));
@@ -72,7 +73,7 @@ const initPlayerPieces = (player: PLAYERS) => {
 
 const toggleMoveToSquareHandler = (element: ELEMENTS, mode: MOVES) => {
   if (Array.isArray(element)) {
-    element.forEach(el => el.removeEventListener("click", movePieceWithClickHandler);
+    element.forEach(el => el.removeEventListener("click", movePieceWithClickHandler));
     //element.forEach(el => el.removeEventListener("drop", movePieceWithDragHandler));
   }
   else {
@@ -108,15 +109,25 @@ const setValidMoves = (): void => {
 
   const checkForLightColoredSquare = (num: number) => squares[PIECE_INDEX + num].getAttribute("data-color") === LIGHT ? true : false;
 
-  const checkForOpponentJump = (num: number) => {
+  const checkForOpponentJump = () => {
+    console.log(currentPlayer);
     switch (currentPlayer) {
     case PLAYER1:     
-      if (squares[PIECE_INDEX + num].firstElementChild?.getAttribute("data-color") === "blue") return true;
-      else return false;
-        
+      if (squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") === "blue") {
+        toggleValidMoveSquare(squares[PIECE_INDEX + (14)]);
+        return;
+      } else if (squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") === "blue") {
+        toggleValidMoveSquare(squares[PIECE_INDEX + (18)]);
+        return;
+      } else break;
     case PLAYER2: 
-      if (squares[PIECE_INDEX + num].firstElementChild?.getAttribute("data-color") === "blue") return true;
-      else return false;
+      if (squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === "red") {
+        toggleValidMoveSquare(squares[PIECE_INDEX - (14)]);
+        return;
+      } else if (squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === "red") {
+        toggleValidMoveSquare(squares[PIECE_INDEX - (18)]);
+        return;
+      } else break;
     default:
       throw new Error("problem with current player not set correctly!");
     }
@@ -125,18 +136,22 @@ const setValidMoves = (): void => {
   if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
     toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
     toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE_ENABLE);
+    checkForOpponentJump();
   }
   if (checkForEmptySquare(9) && checkForLightColoredSquare(9)) {
     toggleValidMoveSquare(squares[PIECE_INDEX + 9]);
     toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE_ENABLE);
+    checkForOpponentJump();
   }
   if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
     toggleValidMoveSquare(squares[PIECE_INDEX - 7]);
     toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE_ENABLE);
+    checkForOpponentJump();
   }
   if (checkForEmptySquare(-9) && checkForLightColoredSquare(-9)) {
     toggleValidMoveSquare(squares[PIECE_INDEX - 9]);
     toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE_ENABLE);
+    checkForOpponentJump();
   }
 };
 
@@ -167,14 +182,14 @@ const resetSettings = () => {
   changePlayerTurn();
 };
 
-const movePieceWithClickHandler = (event: MouseEvent) => {
+const movePieceWithClickHandler = (event: any) => {
   console.log("moved piece with click");
-  const newIndex = (<HTMLElement>event.target).id;
+  const targetID = (<HTMLElement>event.target).id;
   const activePiece = document.querySelector(`#${selectedPiece.id}`) as HTMLElement;
   activePiece.remove();
-  const target: any = event.currentTarget;
+  const target = event.currentTarget;
   target.appendChild(activePiece);
-  updateBoardState(parseInt(newIndex));
+  updateBoardState(parseInt(targetID));
   console.log(BOARD_STATE);
   resetSettings();
 };
