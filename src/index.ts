@@ -103,6 +103,7 @@ const setValidMoves = (): void => {
 
   const checkForEmptySquare = (num: number) => {
     if (BOARD_STATE[PIECE_INDEX + num] === null && !squares[PIECE_INDEX + num].hasChildNodes()) {
+      console.log(!squares[PIECE_INDEX + num].hasChildNodes());
       return true;
     } else return false;
   };
@@ -113,19 +114,27 @@ const setValidMoves = (): void => {
     console.log(currentPlayer);
     switch (currentPlayer) {
     case PLAYER1:     
-      if (squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") === "blue") {
-        toggleValidMoveSquare(squares[PIECE_INDEX + (14)]);
+      if (squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") === "blue" && 
+          BOARD_STATE[PIECE_INDEX + 14] == null) {
+        toggleValidMoveSquare(squares[PIECE_INDEX + 14]);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE_ENABLE);
         return;
-      } else if (squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") === "blue") {
-        toggleValidMoveSquare(squares[PIECE_INDEX + (18)]);
+      } else if (squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") === "blue" &&
+                 BOARD_STATE[PIECE_INDEX + 18] == null) {
+        toggleValidMoveSquare(squares[PIECE_INDEX + 18]);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE_ENABLE);
         return;
       } else break;
     case PLAYER2: 
-      if (squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === "red") {
-        toggleValidMoveSquare(squares[PIECE_INDEX - (14)]);
+      if (squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === "red" &&
+          BOARD_STATE[PIECE_INDEX - 14] == null) {
+        toggleValidMoveSquare(squares[PIECE_INDEX - 14]);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE_ENABLE);
         return;
-      } else if (squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === "red") {
-        toggleValidMoveSquare(squares[PIECE_INDEX - (18)]);
+      } else if (squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === "red" && 
+                 BOARD_STATE[PIECE_INDEX - 18] == null) {
+        toggleValidMoveSquare(squares[PIECE_INDEX - 18]);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE_ENABLE);
         return;
       } else break;
     default:
@@ -133,26 +142,31 @@ const setValidMoves = (): void => {
     }
   };
 
-  if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
-    toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
-    toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE_ENABLE);
-    checkForOpponentJump();
+  switch (currentPlayer) {
+  case PLAYER1: 
+    if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
+      toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
+      toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE_ENABLE);
+    }
+    if (checkForEmptySquare(9) && checkForLightColoredSquare(9)) {
+      toggleValidMoveSquare(squares[PIECE_INDEX + 9]);
+      toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE_ENABLE);
+    }
+    break;
+  case PLAYER2:
+    if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
+      toggleValidMoveSquare(squares[PIECE_INDEX - 7]);
+      toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE_ENABLE);
+    }
+    if (checkForEmptySquare(-9) && checkForLightColoredSquare(-9)) {
+      toggleValidMoveSquare(squares[PIECE_INDEX - 9]);
+      toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE_ENABLE);
+    }
+    break;
+  default: 
+    throw new Error("problem with current player!");
   }
-  if (checkForEmptySquare(9) && checkForLightColoredSquare(9)) {
-    toggleValidMoveSquare(squares[PIECE_INDEX + 9]);
-    toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE_ENABLE);
-    checkForOpponentJump();
-  }
-  if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
-    toggleValidMoveSquare(squares[PIECE_INDEX - 7]);
-    toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE_ENABLE);
-    checkForOpponentJump();
-  }
-  if (checkForEmptySquare(-9) && checkForLightColoredSquare(-9)) {
-    toggleValidMoveSquare(squares[PIECE_INDEX - 9]);
-    toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE_ENABLE);
-    checkForOpponentJump();
-  }
+  checkForOpponentJump();
 };
 
 /*
