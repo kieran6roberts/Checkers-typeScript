@@ -72,13 +72,11 @@ const addListenersToPieces = (player1: Element[], player2: Element[]) => {
 
 const initPlayerPieces = (player: PLAYER) => {
   if (player === PLAYER.RED) {
-    console.log("init red player pieces");
     currentPlayer = PLAYER.RED;
     addListenersToPieces(redPieces, bluePieces);
     //redPieces.forEach(piece => piece.addEventListener("dragstart", (event: any) => setDragInitHandler(event)));
   }
   else if (player === PLAYER.BLUE) {
-    console.log("init blue player pieces");
     currentPlayer = PLAYER.BLUE;
     addListenersToPieces(bluePieces, redPieces);
     //bluePieces.forEach(piece => piece.addEventListener("dragstart", (event: any) => setDragInitHandler(event)));
@@ -109,8 +107,14 @@ const toggleValidMoveSquare = (element: Element) => {
 };
 
 const updateBoardState = (newState: number) => {
-  BOARD_STATE[selectedPiece.index] = null;
   BOARD_STATE[newState] = selectedPiece.id;
+  BOARD_STATE[selectedPiece.index] = null;
+
+  if (selectedPiece.jumpPieceID != null) {
+    const removalIndex = BOARD_STATE.indexOf(selectedPiece.jumpPieceID);
+    BOARD_STATE[removalIndex] = null;
+  }
+  console.log(BOARD_STATE);
 };
 
 const removePieceAfterJump = () => {
@@ -125,8 +129,8 @@ const setValidMoves = (): void => {
   const LIGHT = "light";
 
   const checkForEmptySquare = (num: number) => {
-    if (BOARD_STATE[PIECE_INDEX + num] === null && !squares[PIECE_INDEX + num].hasChildNodes()) {
-      console.log(!squares[PIECE_INDEX + num].hasChildNodes());
+    if (BOARD_STATE[PIECE_INDEX + num] == null && !squares[PIECE_INDEX + num].hasChildNodes()) {
+      console.log("there is an empty square");
       return true;
     } else return false;
   };
@@ -170,6 +174,7 @@ const setValidMoves = (): void => {
 
   switch (currentPlayer) {
   case PLAYER.RED: 
+    console.log(BOARD_STATE);
     if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
       toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
       toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE.ENABLE);
@@ -180,6 +185,7 @@ const setValidMoves = (): void => {
     }
     break;
   case PLAYER.BLUE:
+    console.log(BOARD_STATE);
     if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
       toggleValidMoveSquare(squares[PIECE_INDEX - 7]);
       toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE.ENABLE);
@@ -222,15 +228,21 @@ const resetSettings = () => {
   changePlayerTurn();
 };
 
+const shouldPieceBeRemoved = (id: string) => {
+  const indexDifference = Math.abs(parseInt(id) - selectedPiece.index);
+  console.log(indexDifference);
+  // piece jumped other player's piece
+  if (indexDifference > 9) removePieceAfterJump();
+};
+
 const movePieceWithClickHandler = (event: Event) => {
   const activePiece = document.querySelector(`#${selectedPiece.id}`) as HTMLElement;
-  activePiece.remove();
-  removePieceAfterJump();
-  
-  const target = <Element>event.currentTarget;
-  target.appendChild(activePiece);
-  
+  const currentTarget = <Element>event.currentTarget;
   const targetID = (<HTMLElement>event.target).id;
+
+  activePiece.remove();
+  shouldPieceBeRemoved(currentTarget.id);
+  currentTarget.appendChild(activePiece);
   updateBoardState(parseInt(targetID));
   resetSettings();
 };
