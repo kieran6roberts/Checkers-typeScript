@@ -46,8 +46,8 @@ body {
 }
 
 .piece {
-    height: 3.5rem;
-    width: 3.5rem;
+    height: 2.5rem;
+    width: 2.5rem;
     border-radius: 50%;
     align-self: center;
     justify-self: center;
@@ -118,6 +118,13 @@ body {
 .valid-drop {
     opacity: 20%;
 }
+
+@media only screen and (min-width: 500px) and (min-height: 600px) {
+    .piece {
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+};
 
 @media only screen and (min-width: 1000px) and (min-height: 800px) {
     .piece {
