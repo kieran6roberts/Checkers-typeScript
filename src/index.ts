@@ -65,19 +65,22 @@ const setDragInitHandler = (event: DragEvent) => {
   setCurrentPieceHandler(event);
 };*/
 
+const addListenersToPieces = (player1: Element[], player2: Element[]) => {
+  player1.forEach(piece => piece.addEventListener("click", setCurrentPieceHandler));
+  player2.forEach(piece => piece.removeEventListener("click", setCurrentPieceHandler));
+};
+
 const initPlayerPieces = (player: PLAYER) => {
   if (player === PLAYER.RED) {
     console.log("init red player pieces");
     currentPlayer = PLAYER.RED;
-    bluePieces.forEach(piece => piece.removeEventListener("click", setCurrentPieceHandler));
-    redPieces.forEach(piece => piece.addEventListener("click", setCurrentPieceHandler));
+    addListenersToPieces(redPieces, bluePieces);
     //redPieces.forEach(piece => piece.addEventListener("dragstart", (event: any) => setDragInitHandler(event)));
   }
   else if (player === PLAYER.BLUE) {
     console.log("init blue player pieces");
     currentPlayer = PLAYER.BLUE;
-    redPieces.forEach(piece => piece.removeEventListener("click", setCurrentPieceHandler));
-    bluePieces.forEach(piece => piece.addEventListener("click", setCurrentPieceHandler));
+    addListenersToPieces(bluePieces, redPieces);
     //bluePieces.forEach(piece => piece.addEventListener("dragstart", (event: any) => setDragInitHandler(event)));
   }
   else throw new Error("no valid player selecetd");
@@ -101,7 +104,7 @@ const toggleMoveToSquareHandler = (element: ELEMENTS, mode: MOVE) => {
   }
 };
 
-const toggleValidMoveSquare = (element: Element): void => {
+const toggleValidMoveSquare = (element: Element) => {
   element.classList.toggle("valid-drop");
 };
 
@@ -110,12 +113,11 @@ const updateBoardState = (newState: number) => {
   BOARD_STATE[newState] = selectedPiece.id;
 };
 
-const removePieceAfterJump = (query: string) => {
-  const pieceToRemove = document.querySelector(query) as HTMLElement;
-  const currentPosition = selectedPiece.index;
-  console.log(currentPosition);
-  pieceToRemove.remove();
-
+const removePieceAfterJump = () => {
+  if (selectedPiece.jumpPieceID != null) {
+    const pieceToRemove = document.querySelector(`#${selectedPiece.jumpPieceID}`) as HTMLElement;
+    pieceToRemove.remove();
+  }
 };
 
 const setValidMoves = (): void => {
@@ -134,28 +136,31 @@ const setValidMoves = (): void => {
   const checkForOpponentJump = () => {
     switch (currentPlayer) {
     case PLAYER.RED:     
-      if (squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") === "blue" && 
+      if (squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") === PLAYER.BLUE && 
           BOARD_STATE[PIECE_INDEX + 14] == null) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 14]);
         toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 7];
         return;
-      } else if (squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") === "blue" &&
+      } else if (squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") === PLAYER.BLUE &&
       BOARD_STATE[PIECE_INDEX + 18] == null) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 18]);
         toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE);
+        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 9];
         return;
       } else break;
     case PLAYER.BLUE: 
-      if (squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === "red" &&
+      if (squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === PLAYER.RED &&
       BOARD_STATE[PIECE_INDEX - 14] == null) {
         toggleValidMoveSquare(squares[PIECE_INDEX - 14]);
         toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE);
+        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 7];
         return;
-      } else if (squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === "red" && 
+      } else if (squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === PLAYER.RED && 
       BOARD_STATE[PIECE_INDEX - 18] == null) {
         toggleValidMoveSquare(squares[PIECE_INDEX - 18]);
         toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE);
+        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 9];
         return;
       } else break;
     default:
@@ -220,7 +225,7 @@ const resetSettings = () => {
 const movePieceWithClickHandler = (event: Event) => {
   const activePiece = document.querySelector(`#${selectedPiece.id}`) as HTMLElement;
   activePiece.remove();
-  console.log(selectedPiece.jumpPieceID);
+  removePieceAfterJump();
   
   const target = <Element>event.currentTarget;
   target.appendChild(activePiece);
