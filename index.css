@@ -1,39 +1,76 @@
 :root {
     --piece1-clr: red;
     --piece2-clr: blue;
-    --sqr1-clr: hsl(29, 78%, 18%);
-    --sqr2-clr:  hsl(39, 68%, 79%);
-    --piece1-hover: rgb(197, 6, 6);
-    --piece2-hover: rgb(11, 11, 175);
+    --sqr1-clr: #522d0a;
+    --sqr2-clr:  #eed4a5;
+    --piece1-hover: #c50606;
+    --piece2-hover: #0b0baf;
 }
 
 *,
 *:after,
 *:before {
     box-sizing: border-box;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 body {
+    background-color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow-y: scroll;
+}
+
+.scoreboard {
+    align-items: center;
+    color: #868383;
+    display: flex;
+    font-size: 1.5rem;
+    height: 20vh;
+    justify-content: space-evenly;
+    text-align: center;
+    width: 100%;
+}
+
+.scoreboard__blue,
+.scoreboard__red {
+    padding: 0.8rem 1.6rem;
+}
+
+.scoreboard__red-turn,
+.scoreboard__blue-turn {
+    font-size: 1em;
+    transition: all 400ms ease-in;
+    margin-bottom: 0.2rem;
+}
+
+.scoreboard__blue-score,
+.scoreboard__red-score {
+    font-size: 0.6em;
+}
+
+.wrapper {
+    height: 80vh;
+    position: relative;
 }
 
 .squares,
 .pieces {
+    border: 4px solid #000000;
+    bottom: 0;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
+    height: 80vh;
+    left: 50%;
+    max-width: 750px;
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 75%;
     pointer-events: none;
+    transform: translate(-50%, 0);
+    width: 100%;
 }
 
 .pieces {
-    z-index: 1;
     grid-template-areas: 
         ". a2 . a4 . a6 . a8"
         "b1 . b3 . b5 . b7 ."
@@ -43,27 +80,28 @@ body {
         "f1 . f3 . f5 . f7 ."
         ". g2 . g4 . g6 . g8"
         "h1 . h3 . h5 . h7 .";
+    z-index: 1;
 }
 
 .piece {
-    height: 2.5rem;
-    width: 2.5rem;
-    border-radius: 50%;
     align-self: center;
+    border-radius: 50%;
+    height: 2.5rem;
     justify-self: center;
     pointer-events: all;
+    width: 2.5rem;
 }
 
 .piece[data-color="blue"]:hover {background-color: var(--piece2-hover);}
 .piece[data-color="red"]:hover {background-color: var(--piece1-hover);}
 
 .square {
-    display: flex;
-    justify-content: center;
     align-items: center;
+    display: flex;
     height: 100%;
-    width: 100%;
+    justify-content: center;
     pointer-events: all;
+    width: 100%;
 }
 
 .square[data-color="dark"] {background-color: var(--sqr1-clr)}
@@ -110,13 +148,19 @@ body {
     opacity: 30%;
 }
 
+.player-turn {
+    opacity: 100%;
+    background-color: rgb(107, 101, 101);
+    color: #fff;
+}
+
 /* drag over */
 .overSquare {
     opacity: 60%;
 }
 
 .valid-drop {
-    opacity: 20%;
+    opacity: 60%;
 }
 
 @media only screen and (min-width: 500px) and (min-height: 600px) {

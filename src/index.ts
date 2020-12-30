@@ -1,6 +1,10 @@
 const redPieces = [...document.querySelectorAll("[data-color='red']")];
 const bluePieces = [...document.querySelectorAll("[data-color='blue']")];
 const squares = [...document.querySelectorAll(".square")];
+const redPlayerElement = document.querySelector(".scoreboard__red")! as HTMLElement;
+const bluePlayerElement = document.querySelector(".scoreboard__blue")! as HTMLElement;
+const redScoreElement = document.querySelector(".scoreboard__red-score")! as HTMLElement;
+const blueScoreElement = document.querySelector(".scoreboard__blue-score")! as HTMLElement;
 
 enum MOVE { 
   ENABLE = "enable", 
@@ -33,6 +37,8 @@ const BOARD_STATE = [
 ];
 
 let currentPlayer: PLAYER;
+let redPlayerPieces = 12;
+let bluePlayerPieces = 12;
 
 const selectedPiece: SELECTED_PIECE = {
   id: "-1",
@@ -202,12 +208,12 @@ const setValidMoves = () => {
   default: 
     throw new Error("problem with current player!");
   }
-  console.log(selectedPiece);
+
   if (!selectedPiece.firstMove && checkForOpponentJump()) {
-    console.log("another jump available");
     checkForOpponentJump();
   } else if (!selectedPiece.firstMove && !checkForOpponentJump()) {
     resetSettings();
+    return;
   }
 
   checkForOpponentJump();
@@ -227,8 +233,16 @@ const movePieceWithDragHandler = (event: any) => {
 };*/
 
 const changePlayerTurn = () => {
-  if (currentPlayer === PLAYER.RED) initPlayerPieces(PLAYER.BLUE);
-  else initPlayerPieces(PLAYER.RED);
+  if (currentPlayer === PLAYER.RED) {
+    initPlayerPieces(PLAYER.BLUE);
+    bluePlayerElement.classList.add("player-turn");
+    redPlayerElement.classList.remove("player-turn");
+  }
+  else {
+    initPlayerPieces(PLAYER.RED);
+    redPlayerElement.classList.add("player-turn");
+    bluePlayerElement.classList.remove("player-turn");
+  }
 };
 
 const removeValidDrops = () => {
@@ -237,10 +251,23 @@ const removeValidDrops = () => {
   toggleMoveToSquareHandler([...listenerElements], MOVE.RESET);
 };
 
+const appendScoreToDOM = () => {
+  redScoreElement.textContent = redPlayerPieces.toString();
+  blueScoreElement.textContent = bluePlayerPieces.toString();
+};
+
 const resetSettings = () => {
   removeValidDrops();
   resetSelectedPiece();
   changePlayerTurn();
+};
+
+const updatePlayerCount = () => {
+  if (currentPlayer === PLAYER.RED) {
+    bluePlayerPieces = --bluePlayerPieces;
+  } else if (currentPlayer === PLAYER.BLUE) {
+    redPlayerPieces = --redPlayerPieces;
+  }
 };
 
 const shouldPieceBeRemoved = (id: string) => {
@@ -249,6 +276,8 @@ const shouldPieceBeRemoved = (id: string) => {
   if (indexDifference > 9) {
     selectedPiece.firstMove = false;
     removePieceAfterJump();
+    updatePlayerCount();
+    appendScoreToDOM();
     removeValidDrops();
     setCurrentPieceHandler(selectedPiece.id);
   } else {
@@ -267,3 +296,4 @@ const movePieceWithClickHandler = (event: Event) => {
 };
 
 initPlayerPieces(PLAYER.RED);
+appendScoreToDOM();
