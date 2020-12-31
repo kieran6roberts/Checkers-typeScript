@@ -264,9 +264,33 @@ const resetSettings = () => {
 
 const updatePlayerCount = () => {
   if (currentPlayer === PLAYER.RED) {
-    bluePlayerPieces = --bluePlayerPieces;
+    --bluePlayerPieces;
   } else if (currentPlayer === PLAYER.BLUE) {
-    redPlayerPieces = --redPlayerPieces;
+    --redPlayerPieces;
+  }
+};
+
+const checkIsPieceKing = () => {
+  if (currentPlayer === PLAYER.BLUE) {
+    BOARD_STATE.slice(0, 8).find(piece => {
+      if (piece?.includes("f") || piece?.includes("g") || piece?.includes("h")) {
+        setPieceToKing(piece);
+      }
+    });
+  } else if (currentPlayer === PLAYER.RED) {
+    BOARD_STATE.slice(58, 64).find(piece => {
+      if (piece?.includes("a") || piece?.includes("b") || piece?.includes("c")) {
+        setPieceToKing(piece);
+      }
+    });
+  }
+};
+
+const setPieceToKing = (piece: string) => {
+  const king = document.querySelector(`#${piece}`);
+  if (king) {
+    king.classList.add("king");
+    king.textContent = "K";
   }
 };
 
@@ -292,6 +316,7 @@ const movePieceWithClickHandler = (event: Event) => {
   activePiece.remove();
   currentTarget.appendChild(activePiece);
   updateBoardState(parseInt(targetID));
+  checkIsPieceKing();
   shouldPieceBeRemoved(currentTarget.id);
 };
 
