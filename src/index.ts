@@ -66,6 +66,7 @@ const setCurrentPieceHandler = (event: Event | string) => {
   const activePieceBoardPosition = BOARD_STATE.indexOf(activePieceID);
   selectedPiece.id = activePieceID;
   selectedPiece.index = activePieceBoardPosition;
+  console.log(selectedPiece);
   setValidMoves();
 };
 
@@ -124,14 +125,26 @@ const updateBoardState = (newState: number) => {
   BOARD_STATE[newState] = selectedPiece.id;
   BOARD_STATE[selectedPiece.index] = null;
 
-  if (selectedPiece.jumpPieceID != null) {
-    const removalIndex = BOARD_STATE.indexOf(selectedPiece.jumpPieceID);
-    BOARD_STATE[removalIndex] = null;
-  }
+  const removalIndex = BOARD_STATE.indexOf(selectedPiece.jumpPieceID);
+
+  if (currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing) {
+    if (newState - removalIndex === 7 || newState - removalIndex === 9) {
+      BOARD_STATE[removalIndex] = null;
+    }
+
+  } else if (currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing) {
+    if (removalIndex - newState === 7 || removalIndex - newState === 9) {
+      BOARD_STATE[removalIndex] = null;
+    }
+
+  } else if (selectedPiece.isPieceKing) {
+    console.log("king");
+  } else throw new Error("error selecting current player!");
+  console.log(BOARD_STATE);
 };
 
 const removePieceAfterJump = () => {
-  if (selectedPiece.jumpPieceID != null) {
+  if (selectedPiece.jumpPieceID) {
     const pieceToRemove = document.querySelector(`#${selectedPiece.jumpPieceID}`) as HTMLElement;
     pieceToRemove.remove();
   }
@@ -278,7 +291,7 @@ const checkIsPieceKing = () => {
       }
     });
   } else if (currentPlayer === PLAYER.RED) {
-    BOARD_STATE.slice(58, 64).find(piece => {
+    BOARD_STATE.slice(57, 64).find(piece => {
       if (piece?.includes("a") || piece?.includes("b") || piece?.includes("c")) {
         setPieceToKing(piece);
       }
@@ -315,8 +328,8 @@ const movePieceWithClickHandler = (event: Event) => {
   const targetID = (<HTMLElement>event.target).id;
   activePiece.remove();
   currentTarget.appendChild(activePiece);
-  updateBoardState(parseInt(targetID));
   checkIsPieceKing();
+  updateBoardState(parseInt(targetID));
   shouldPieceBeRemoved(currentTarget.id);
 };
 
