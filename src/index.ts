@@ -57,19 +57,26 @@ const resetSelectedPiece = () => {
 };
 
 const setCurrentPieceHandler = (event: Event | string) => {
-  let activePieceID;
-  if (typeof event === "string") {
+  let activePieceID: any;
+  if (typeof event === "string") { 
     activePieceID = event;
   } else {
-    activePieceID = (<HTMLElement>event.target).id;
+    if ((<HTMLElement>event.target).getAttribute("data-color")) {
+      activePieceID = (<HTMLElement>event.target).id;
+    } else {
+      activePieceID = (<HTMLElement>event.target).parentElement?.id;
+    }
   }
+  // child click gives id of child element which is the king div;
   const activePieceBoardPosition = BOARD_STATE.indexOf(activePieceID);
+  console.log(activePieceID);
   selectedPiece.id = activePieceID;
   selectedPiece.index = activePieceBoardPosition;
   const isPieceKing = document.querySelector(`#${selectedPiece.id}`);
   if (isPieceKing?.classList.contains("king")) {
     selectedPiece.isPieceKing = true;
-  }
+  } else selectedPiece.isPieceKing = false;
+
   console.log(selectedPiece);
   setValidMoves();
 };
@@ -125,27 +132,25 @@ const toggleValidMoveSquare = (element: Element) => {
   if (element) element.classList.toggle("valid-drop");
 };
 
-const updateBoardState = (newState: number) => {
-  BOARD_STATE[newState] = selectedPiece.id;
+const updateBoardState = (squareNumOfNewPosition: number) => {
+  BOARD_STATE[squareNumOfNewPosition] = selectedPiece.id;
   BOARD_STATE[selectedPiece.index] = null;
 
-  const removalIndex = BOARD_STATE.indexOf(selectedPiece.jumpPieceID);
-  console.log(`newState is ${newState}`);
-  console.log(`removalIndex is ${removalIndex}`);
+  const squareNumOfRemovedPiece = BOARD_STATE.indexOf(selectedPiece.jumpPieceID);
+  console.log(`newState is ${squareNumOfNewPosition}`);
+  console.log(`removalIndex is ${squareNumOfRemovedPiece}`);
 
-  if (currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing) {
-    if (newState - removalIndex === 7 || newState - removalIndex === 9) {
-      BOARD_STATE[removalIndex] = null;
+  if (squareNumOfNewPosition > squareNumOfRemovedPiece) {
+    if (squareNumOfNewPosition - squareNumOfRemovedPiece === 7 || 
+      squareNumOfNewPosition - squareNumOfRemovedPiece === 9) {
+      BOARD_STATE[squareNumOfRemovedPiece] = null;
     }
-
-  } else if (currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing) {
-    if (removalIndex - newState === 7 || removalIndex - newState === 9) {
-      BOARD_STATE[removalIndex] = null;
+  } else {
+    if (squareNumOfRemovedPiece - squareNumOfNewPosition === 7 || 
+      squareNumOfRemovedPiece - squareNumOfNewPosition === 9) {
+      BOARD_STATE[squareNumOfRemovedPiece] = null;
     }
-
-  } else if (selectedPiece.isPieceKing) {
-    console.log("king");
-  } else throw new Error("error selecting current player!");
+  }
   console.log(BOARD_STATE);
 };
 
@@ -222,8 +227,6 @@ const setValidMoves = () => {
     }
     
     if (selectedPiece.isPieceKing) {
-      console.log(squares[PIECE_INDEX + 7].firstElementChild);
-      console.log(currentPlayer);
       if (BOARD_STATE[PIECE_INDEX + 14] == null &&
         PIECE_INDEX + 14 < 63 &&
         squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") !== currentPlayer) {
@@ -246,8 +249,8 @@ const setValidMoves = () => {
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 7];
         canPieceJump = true;
       } else if (BOARD_STATE[PIECE_INDEX - 18] == null &&
-          PIECE_INDEX - 18 > 0 &&
-          squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
+        PIECE_INDEX - 18 > 0 &&
+        squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
         console.log("jump at -18");
         toggleValidMoveSquare(squares[PIECE_INDEX - 18]);
         toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE);
