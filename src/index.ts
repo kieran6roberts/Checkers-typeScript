@@ -66,7 +66,6 @@ const setCurrentPieceHandler = (event: Event | string) => {
   const activePieceBoardPosition = BOARD_STATE.indexOf(activePieceID);
   selectedPiece.id = activePieceID;
   selectedPiece.index = activePieceBoardPosition;
-
   const isPieceKing = document.querySelector(`#${selectedPiece.id}`);
   if (isPieceKing?.classList.contains("king")) {
     selectedPiece.isPieceKing = true;
@@ -86,8 +85,8 @@ const setDragInitHandler = (event: DragEvent) => {
 };*/
 
 const addListenersToPieces = (player1: Element[], player2: Element[]) => {
-  player1.forEach(piece => piece.addEventListener("click", setCurrentPieceHandler));
-  player2.forEach(piece => piece.removeEventListener("click", setCurrentPieceHandler));
+  player1.forEach(piece => piece && piece.addEventListener("click", setCurrentPieceHandler));
+  player2.forEach(piece => piece && piece.removeEventListener("click", setCurrentPieceHandler));
 };
 
 const initPlayerPieces = (player: PLAYER) => {
@@ -131,6 +130,8 @@ const updateBoardState = (newState: number) => {
   BOARD_STATE[selectedPiece.index] = null;
 
   const removalIndex = BOARD_STATE.indexOf(selectedPiece.jumpPieceID);
+  console.log(`newState is ${newState}`);
+  console.log(`removalIndex is ${removalIndex}`);
 
   if (currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing) {
     if (newState - removalIndex === 7 || newState - removalIndex === 9) {
@@ -160,7 +161,10 @@ const setValidMoves = () => {
   const LIGHT = "light";
 
   const checkForEmptySquare = (num: number) => {
-    if (BOARD_STATE[PIECE_INDEX + num] == null && squares[PIECE_INDEX + num].firstElementChild == null) {
+    if (PIECE_INDEX + num < 0 || PIECE_INDEX + num > 63) return;
+
+    if (BOARD_STATE[PIECE_INDEX + num] == null && 
+      squares[PIECE_INDEX + num].firstElementChild == null) {
       return true;
     } else return false;
   };
@@ -175,10 +179,8 @@ const setValidMoves = () => {
 
   const checkForOpponentJump = (): boolean => {  
     let canPieceJump = false;
-    //squares[PIECE_INDEX + 7].firstElementChild &&
-    //red moves
-    if (currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing ||
-      selectedPiece.isPieceKing) {
+
+    if (currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing) {
       if (BOARD_STATE[PIECE_INDEX + 14] == null &&
         PIECE_INDEX + 14 < 63 &&
         squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") === PLAYER.BLUE) {
@@ -186,7 +188,9 @@ const setValidMoves = () => {
         toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 7];
         canPieceJump = true;
-      } else if (BOARD_STATE[PIECE_INDEX + 18] == null &&
+      } 
+      
+      if (BOARD_STATE[PIECE_INDEX + 18] == null &&
         PIECE_INDEX + 18 < 63 &&
         squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") === PLAYER.BLUE) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 18]);
@@ -196,9 +200,45 @@ const setValidMoves = () => {
       }
     } 
 
-    if (currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing || 
-      selectedPiece.isPieceKing) {
+    if (currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing) {
       if (BOARD_STATE[PIECE_INDEX - 14] == null &&
+        PIECE_INDEX - 14 > 0 &&
+        squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
+        toggleValidMoveSquare(squares[PIECE_INDEX - 14]);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE);
+        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 7];
+        canPieceJump = true;
+      } 
+
+      if (BOARD_STATE[PIECE_INDEX - 18] == null &&
+        PIECE_INDEX - 18 > 0 &&
+        squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
+        console.log("jump at -18");
+        toggleValidMoveSquare(squares[PIECE_INDEX - 18]);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE);
+        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 9];
+        canPieceJump = true;
+      } 
+    }
+    
+    if (selectedPiece.isPieceKing) {
+      console.log(squares[PIECE_INDEX + 7].firstElementChild);
+      console.log(currentPlayer);
+      if (BOARD_STATE[PIECE_INDEX + 14] == null &&
+        PIECE_INDEX + 14 < 63 &&
+        squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") !== currentPlayer) {
+        toggleValidMoveSquare(squares[PIECE_INDEX + 14]);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE);
+        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 7];
+        canPieceJump = true;
+      } else if (BOARD_STATE[PIECE_INDEX + 18] == null &&
+        PIECE_INDEX + 18 < 63 &&
+        squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") !== currentPlayer) {
+        toggleValidMoveSquare(squares[PIECE_INDEX + 18]);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE);
+        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 9];
+        canPieceJump = true;
+      } else if (BOARD_STATE[PIECE_INDEX - 14] == null &&
         PIECE_INDEX - 14 > 0 &&
         squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
         toggleValidMoveSquare(squares[PIECE_INDEX - 14]);
@@ -218,32 +258,30 @@ const setValidMoves = () => {
     return canPieceJump ? true : false;
   };
 
-  if (!selectedPiece.isPieceKing) {
-    switch (currentPlayer) {
-    case PLAYER.RED: 
-      if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
-        toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE.ENABLE);
-      }
-      if (checkForEmptySquare(9) && checkForLightColoredSquare(9)) {
-        toggleValidMoveSquare(squares[PIECE_INDEX + 9]);
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE.ENABLE);
-      }
-      break;
-    case PLAYER.BLUE:
-      if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
-        toggleValidMoveSquare(squares[PIECE_INDEX - 7]);
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE.ENABLE);
-      }
-      if (checkForEmptySquare(-9) && checkForLightColoredSquare(-9)) {
-        toggleValidMoveSquare(squares[PIECE_INDEX - 9]);
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE.ENABLE);
-      }
-      break;
-    default: 
-      throw new Error("problem with current player!");
+  if (currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing || 
+    selectedPiece.isPieceKing) {
+    if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
+      PIECE_INDEX + 7 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
+      PIECE_INDEX + 7 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE.ENABLE);
+    }
+    if (checkForEmptySquare(9) && checkForLightColoredSquare(9)) {
+      PIECE_INDEX + 9 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 9]);
+      PIECE_INDEX + 9 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE.ENABLE);
+    }
+  } 
+
+  if (currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing || 
+      selectedPiece.isPieceKing) {
+    if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
+      PIECE_INDEX - 7 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 7]);
+      PIECE_INDEX - 7 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE.ENABLE);
+    }
+    if (checkForEmptySquare(-9) && checkForLightColoredSquare(-9)) {
+      PIECE_INDEX - 9 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 9]);
+      PIECE_INDEX - 9 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE.ENABLE);
     }
   }
+
 
   if (selectedPiece.firstMove) {
     checkForOpponentJump();
@@ -285,7 +323,6 @@ const changePlayerTurn = () => {
 const removeValidDrops = () => {
   const listenerElements = [...document.querySelectorAll(".valid-drop")];
   listenerElements.forEach(element => toggleValidMoveSquare(element));
-  console.log(listenerElements);
   toggleMoveToSquareHandler(listenerElements, MOVE.RESET);
 };
 
@@ -308,24 +345,27 @@ const updatePlayerCount = () => {
   }
 };
 
-const checkIsPieceKing = () => {
+const checkIsPieceKing = (): boolean => {
+  let isKing = false;
   if (currentPlayer === PLAYER.BLUE) {
-    BOARD_STATE.slice(0, 7).find(piece => {
+    BOARD_STATE.slice(0, 8).find(piece => {
       if (piece?.includes("f") || piece?.includes("g") || piece?.includes("h")) {
         setPieceToKing(piece);
+        isKing = true;
       }
     });
   } else if (currentPlayer === PLAYER.RED) {
     BOARD_STATE.slice(56, 63).find(piece => {
       if (piece?.includes("a") || piece?.includes("b") || piece?.includes("c")) {
         setPieceToKing(piece);
+        isKing = true;
       }
     });
-  }
+  } else isKing = false;
+  return isKing;
 };
 
 const setPieceToKing = (piece: string) => {
-  console.log(`king piece is ${piece}`);
   const kingPiece = document.querySelector(`#${piece}`);
   if (kingPiece) {
     kingPiece.classList.add("king");
@@ -333,22 +373,25 @@ const setPieceToKing = (piece: string) => {
     kingChildElement.textContent = "K";
     kingPiece.appendChild(kingChildElement);
   }
-  resetSettings();
 };
 
 const shouldPieceBeRemoved = (id: string) => {
   const indexDifference = Math.abs(parseInt(id) - selectedPiece.index);
   // piece jumped other player's piece
-  console.log(`index difference is ${indexDifference}`);
+  removeValidDrops();
+
   if (indexDifference > 9) {
     selectedPiece.firstMove = false;
     removePieceAfterJump();
     updatePlayerCount();
     appendScoreToDOM();
-    removeValidDrops();
-    checkIsPieceKing();
-    setCurrentPieceHandler(selectedPiece.id);
+    if (checkIsPieceKing()) {
+      resetSettings();
+    } else {
+      setCurrentPieceHandler(selectedPiece.id);
+    }
   } else {
+    checkIsPieceKing();
     resetSettings();
   }
 };
