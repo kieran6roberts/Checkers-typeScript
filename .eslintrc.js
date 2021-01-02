@@ -20,5 +20,6 @@ module.exports = {
     "semi": ["error", "always"],
     "indent": ["error", 2],
     "no-console": [0],
+    "prefer-const": [0],
   }
 };
