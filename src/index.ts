@@ -1,3 +1,5 @@
+import resetSelectedPiece from "./resetSelectedPiece";
+
 const redPieces = [...document.querySelectorAll("[data-color='red']")];
 const bluePieces = [...document.querySelectorAll("[data-color='blue']")];
 const squares = [...document.querySelectorAll(".square")];
@@ -43,20 +45,12 @@ let currentPlayer: PLAYER;
 let redPlayerPieces = 12;
 let bluePlayerPieces = 12;
 
-const selectedPiece: SELECTED_PIECE = {
+export const selectedPiece: SELECTED_PIECE = {
   id: "-1",
   index: -1,
   isPieceKing: false,
   jumpPieceID: null,
   firstMove: true
-};
-
-const resetSelectedPiece = () => {
-  selectedPiece.id = "-1";
-  selectedPiece.index = -1;
-  selectedPiece.isPieceKing = false;
-  selectedPiece.jumpPieceID = null;
-  selectedPiece.firstMove = true;
 };
 
 const setCurrentPieceHandler = (event: Event | string) => {
@@ -441,6 +435,7 @@ const checkForWinCondition = () => {
   }
   newGameBtn.addEventListener("click", () => document.location.reload());
 };
+
 
 initPlayerPieces(PLAYER.RED);
 appendScoreToDOM();
