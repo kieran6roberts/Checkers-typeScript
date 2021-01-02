@@ -21,10 +21,20 @@
             <p class="scoreboard__blue-score"></p>
         </div>
     </div>
+    <div class="win-modal">
+        <div class="win-modal__content">
+            <div class="win-modal__winner">
+                
+            </div>
+            <button class="win-modal__reset">
+                New Game
+            </button>
+        </div>
+    </div>
     <div class="wrapper">
         <div class="squares">
             <!---row 1-->
-            <div data-color="dark" class="square" id="0"></div>
+            <div data-color="dark" class="square edge" id="0"></div>
             <div data-color="light" class="square" id="1">
                 <div data-color="red" class="piece a2" id="a2" draggable="true"></div>
             </div>
@@ -38,10 +48,10 @@
             </div>
             <div data-color="dark" class="square" id="6"></div>
             <div data-color="light" class="square" id="7">
-                <div data-color="red" class="piece a8" id="a8" draggable="true"></div>
+                <div data-color="red" class="piece a8 edge" id="a8" draggable="true"></div>
             </div>
             <!---row 2-->
-            <div data-color="light" class="square" id="8">
+            <div data-color="light" class="square edge" id="8">
                 <div data-color="red" class="piece b1" id="b1" draggable="true"></div>
             </div>
             <div data-color="dark" class="square" id="9"></div>
@@ -56,9 +66,9 @@
             <div data-color="light" class="square" id="14">
                 <div data-color="red" class="piece b7" id="b7" draggable="true"></div>
             </div>
-            <div data-color="dark" class="square" id="15"></div>
+            <div data-color="dark" class="square edge" id="15"></div>
             <!---row 3-->
-            <div data-color="dark" class="square" id="16"></div>
+            <div data-color="dark" class="square edge" id="16"></div>
             <div data-color="light" class="square" id="17">
                 <div data-color="red" class="piece c2" id="c2" draggable="true"></div>
             </div>
@@ -71,29 +81,29 @@
                 <div data-color="red" class="piece c6" id="c6" draggable="true"></div>
             </div>
             <div data-color="dark" class="square" id="22"></div>
-            <div data-color="light" class="square" id="23">
+            <div data-color="light" class="square edge" id="23">
                 <div data-color="red" class="piece c8" id="c8" draggable="true"></div>
             </div>
             <!---row 4-->
-            <div data-color="light" class="square" id="24"></div>
+            <div data-color="light" class="square edge" id="24"></div>
             <div data-color="dark" class="square" id="25"></div>
             <div data-color="light" class="square" id="26"></div>
             <div data-color="dark" class="square" id="27"></div>
             <div data-color="light" class="square" id="28"></div>
             <div data-color="dark" class="square" id="29"></div>
             <div data-color="light" class="square" id="30"></div>
-            <div data-color="dark" class="square" id="31"></div>
+            <div data-color="dark" class="square edge" id="31"></div>
             <!---row 5-->
-            <div data-color="dark" class="square" id="32"></div>
+            <div data-color="dark" class="square edge" id="32"></div>
             <div data-color="light" class="square" id="33"></div>
             <div data-color="dark" class="square" id="34"></div>
             <div data-color="light" class="square" id="35"></div>
             <div data-color="dark" class="square" id="36"></div>
             <div data-color="light" class="square" id="37"></div>
             <div data-color="dark" class="square" id="38"></div>
-            <div data-color="light" class="square" id="39"></div>
+            <div data-color="light" class="square edge" id="39"></div>
             <!---row 6-->
-            <div data-color="light" class="square" id="40">
+            <div data-color="light" class="square edge" id="40">
                 <div data-color="blue" class="piece f1" id="f1" draggable="true"></div>
             </div>
             <div data-color="dark" class="square" id="41"></div>
@@ -108,9 +118,9 @@
             <div data-color="light" class="square" id="46">
                 <div data-color="blue" class="piece f7" id="f7" draggable="true"></div>
             </div>
-            <div data-color="dark" class="square" id="47"></div>
+            <div data-color="dark" class="square edge" id="47"></div>
             <!---row 7-->
-            <div data-color="dark" class="square" id="48"></div>
+            <div data-color="dark" class="square edge" id="48"></div>
             <div data-color="light" class="square" id="49">
                 <div data-color="blue" class="piece g2" id="g2" draggable="true"></div>
             </div>
@@ -123,11 +133,11 @@
                 <div data-color="blue" class="piece g6" id="g6" draggable="true"></div>
             </div>
             <div data-color="dark" class="square" id="54"></div>
-            <div data-color="light" class="square" id="55">
+            <div data-color="light" class="square edge" id="55">
                 <div data-color="blue" class="piece g8" id="g8" draggable="true"></div>
             </div>
             <!---row 8-->
-            <div data-color="light" class="square" id="56">
+            <div data-color="light" class="square edge" id="56">
                 <div data-color="blue" class="piece h1" id="h1" draggable="true"></div>
             </div>
             <div data-color="dark" class="square" id="57"></div>
@@ -136,13 +146,13 @@
             </div>
             <div data-color="dark" class="square" id="59"></div>
             <div data-color="light" class="square" id="60">
-                <div data-color="blue" class="piece h7" id="h7" draggable="true"></div>
+                <div data-color="blue" class="piece h5" id="h5" draggable="true"></div>
             </div>
             <div data-color="dark" class="square" id="61"></div>
             <div data-color="light" class="square" id="62">
-                <div data-color="blue" class="piece h5" id="h5" draggable="true"></div>
+                <div data-color="blue" class="piece h7" id="h7" draggable="true"></div>
             </div>
-            <div data-color="dark" class="square" id="63"></div>
+            <div data-color="dark" class="square edge" id="63"></div>
         </div>
 
     </div>

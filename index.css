@@ -19,6 +19,7 @@ body {
     background-color: #333;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow-y: scroll;
+    position: relative;
 }
 
 .scoreboard {
@@ -47,6 +48,37 @@ body {
 .scoreboard__blue-score,
 .scoreboard__red-score {
     font-size: 0.6em;
+}
+
+.win-modal {
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    bottom: 0;
+    display: none;
+    justify-content: center;
+    left: 0;
+    right: 0;
+    position: absolute;
+    top: 0;
+    z-index: 99;
+}
+
+.win-modal__content {
+    align-items: center;
+    background-color: var(--sqr2-clr);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 30%;
+    width: 40%;
+}
+
+.win-modal__reset {
+    cursor: pointer;
+    border: 2px solid var(--sqr1-clr);
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    text-transform: uppercase;
 }
 
 .wrapper {
@@ -160,6 +192,10 @@ body {
 .king {
     border: 3px solid #fff;
     color: #fff;
+}
+
+.show-modal {
+    display: flex;
 }
 
 /* drag over */
