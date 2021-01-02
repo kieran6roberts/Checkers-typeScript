@@ -1,6 +1,6 @@
-import { selectedPiece } from "./index";
+import { selectedPiece } from "./control";
 
-const resetSelectedPiece = () => {
+const resetSelectedPiece = (): void => {
   selectedPiece.id = "-1";
   selectedPiece.index = -1;
   selectedPiece.isPieceKing = false;

@@ -1,6 +1,6 @@
-import { BOARD_STATE, selectedPiece } from "./index";
+import { BOARD_STATE, selectedPiece } from "./control";
 
-const updateBoardState = (squareNumOfNewPosition: number) => {
+const updateBoardState = (squareNumOfNewPosition: number): void => {
   BOARD_STATE[squareNumOfNewPosition] = selectedPiece.id;
   BOARD_STATE[selectedPiece.index] = null;
   

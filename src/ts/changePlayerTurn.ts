@@ -1,10 +1,11 @@
 import initPlayerPieces from "./initPlayerPieces";
 import { gameControl, PLAYER } from "./control";
 
-const redPlayerElement = document.querySelector(".scoreboard__red");
-const bluePlayerElement = document.querySelector(".scoreboard__blue");
 
 const changePlayerTurn = (): void => {
+  const redPlayerElement = document.querySelector(".scoreboard__red");
+  const bluePlayerElement = document.querySelector(".scoreboard__blue");
+  
   if (gameControl.currentPlayer === PLAYER.RED) {
     initPlayerPieces(PLAYER.BLUE);
     bluePlayerElement?.classList.add("player-turn");

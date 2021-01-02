@@ -2,33 +2,28 @@ import { BOARD_STATE,
   gameControl,
   MOVE,
   PLAYER,
-  selectedPiece } from "./index";
+  selectedPiece } from "./control";
 import toggleMoveToSquareHandler from "./toggleMoveToSquareHandler";
 import toggleValidMoveSquare from "./toggleValidMoveSquare";
 import resetSettings from "./resetSettings";
 
   
-const setValidMoves = () => {
-  const squares = [...document.querySelectorAll(".square")];
+const setValidMoves = (): void => {
+  const squaresElements = document.querySelectorAll(".square");
+  const squares = Array.from(squaresElements);
   const PIECE_INDEX = selectedPiece.index;
   const LIGHT = "light";
   
-  const checkForEmptySquare = (num: number) => {
+  const checkForEmptySquare = (num: number): boolean | undefined => {
     if (PIECE_INDEX + num < 0 || PIECE_INDEX + num > 63) return;
   
     if (BOARD_STATE[PIECE_INDEX + num] == null && 
         squares[PIECE_INDEX + num].firstElementChild == null) {
       return true;
-    } else return false;
+    } else false;
   };
   
-  const checkForLightColoredSquare = (num: number) => {
-    if (squares[PIECE_INDEX + num].getAttribute("data-color") === LIGHT) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const checkForLightColoredSquare = (num: number) => squares[PIECE_INDEX + num].getAttribute("data-color") === LIGHT ? true : false;
   
   const checkForOpponentJump = (): boolean => {  
     let canPieceJump = false;
@@ -142,11 +137,9 @@ const setValidMoves = () => {
     }
   }
   
-  
   if (selectedPiece.firstMove || !selectedPiece.firstMove && checkForOpponentJump()) {
     checkForOpponentJump();
   } else if (!selectedPiece.firstMove && !checkForOpponentJump()) {
-    console.log("no more jumps. Change player");
     resetSettings();
   }
 };

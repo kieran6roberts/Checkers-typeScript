@@ -1,4 +1,4 @@
-import { selectedPiece } from "./index";
+import { selectedPiece, gameControl, PLAYER } from "./control";
 import appendScoreToDOM from "./appendScoreToDOM";
 import checkForWinCondition from "./checkForWinCondition";
 import checkIsPieceKing from "./checkIsPieceKing";
@@ -8,9 +8,8 @@ import resetSettings from "./resetSettings";
 import setCurrentPieceHandler from "./setCurrentPieceHandler";
 import updatePlayerCount from "./updatePlayerCount";
 
-const shouldPieceBeRemoved = (id: string) => {
+const shouldPieceBeRemoved = (id: string): void => {
   const indexDifference = Math.abs(parseInt(id) - selectedPiece.index);
-  // piece jumped other player's piece
   removeValidDrops();
   
   if (indexDifference > 9) {
@@ -18,12 +17,8 @@ const shouldPieceBeRemoved = (id: string) => {
     removePieceAfterJump();
     updatePlayerCount();
     appendScoreToDOM();
-    checkForWinCondition();
-    if (checkIsPieceKing()) {
-      resetSettings();
-    } else {
-      setCurrentPieceHandler(selectedPiece.id);
-    }
+    gameControl.currentPlayer === PLAYER.RED ? checkForWinCondition(gameControl.bluePlayerPieces) : checkForWinCondition(gameControl.redPlayerPieces);
+    checkIsPieceKing() ? resetSettings() : setCurrentPieceHandler(selectedPiece.id);
   } else {
     checkIsPieceKing();
     resetSettings();

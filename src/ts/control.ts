@@ -9,6 +9,11 @@ const BOARD_STATE = [
   "h1", null, "h3", null, "h5", null, "h7", null,
 ];
 
+enum CLASS {
+  REMOVE = "remove",
+  ADD = "add"
+}
+
 enum PLAYER { 
     RED = "red",
     BLUE ="blue"
@@ -51,6 +56,7 @@ let selectedPiece: SELECTED_PIECE = {
 
 export {
   BOARD_STATE,
+  CLASS,
   CONTROL,
   gameControl,
   ELEMENTS,
