@@ -59,8 +59,15 @@ const resetSelectedPiece = () => {
 const setCurrentPieceHandler = (event: Event | string) => {
   let activePieceID: any;
   if (typeof event === "string") { 
+    if (event !== selectedPiece.id) {
+      removeValidDrops();
+    }
     activePieceID = event;
   } else {
+    if ((<HTMLElement>event.target).id !== selectedPiece.id) {
+      removeValidDrops();
+    }
+    
     if ((<HTMLElement>event.target).getAttribute("data-color")) {
       activePieceID = (<HTMLElement>event.target).id;
     } else {
@@ -229,27 +236,34 @@ const setValidMoves = () => {
     if (selectedPiece.isPieceKing) {
       if (BOARD_STATE[PIECE_INDEX + 14] == null &&
         PIECE_INDEX + 14 < 63 &&
+        squares[PIECE_INDEX + 7].firstElementChild &&
         squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") !== currentPlayer) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 14]);
         toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 7];
         canPieceJump = true;
-      } else if (BOARD_STATE[PIECE_INDEX + 18] == null &&
+      } 
+      if (BOARD_STATE[PIECE_INDEX + 18] == null &&
         PIECE_INDEX + 18 < 63 &&
+        squares[PIECE_INDEX + 9].firstElementChild &&
         squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") !== currentPlayer) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 18]);
         toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 9];
         canPieceJump = true;
-      } else if (BOARD_STATE[PIECE_INDEX - 14] == null &&
+      } 
+      if (BOARD_STATE[PIECE_INDEX - 14] == null &&
         PIECE_INDEX - 14 > 0 &&
+        squares[PIECE_INDEX - 7].firstElementChild &&
         squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
         toggleValidMoveSquare(squares[PIECE_INDEX - 14]);
         toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 7];
         canPieceJump = true;
-      } else if (BOARD_STATE[PIECE_INDEX - 18] == null &&
+      } 
+      if (BOARD_STATE[PIECE_INDEX - 18] == null &&
         PIECE_INDEX - 18 > 0 &&
+        squares[PIECE_INDEX - 9].firstElementChild &&
         squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
         console.log("jump at -18");
         toggleValidMoveSquare(squares[PIECE_INDEX - 18]);
@@ -262,7 +276,7 @@ const setValidMoves = () => {
   };
 
   if (currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing || 
-    selectedPiece.isPieceKing) {
+    selectedPiece.isPieceKing && selectedPiece.firstMove) {
     if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
       PIECE_INDEX + 7 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 7]);
       PIECE_INDEX + 7 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE.ENABLE);
@@ -274,7 +288,7 @@ const setValidMoves = () => {
   } 
 
   if (currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing || 
-      selectedPiece.isPieceKing) {
+      selectedPiece.isPieceKing && selectedPiece.firstMove) {
     if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
       PIECE_INDEX - 7 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 7]);
       PIECE_INDEX - 7 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE.ENABLE);
