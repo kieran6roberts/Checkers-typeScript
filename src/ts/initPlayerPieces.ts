@@ -1,20 +1,21 @@
-import addListenersToPieces from "./addListenersToPieces";
 import { gameControl, PLAYER } from "./control";
 
-const redPiecesElements = document.querySelectorAll("[data-color='red']");
-const bluePiecesElements = document.querySelectorAll("[data-color='blue']");
+const initPlayerPieces = (player: PLAYER, callback: any): void => {
+  const redPiecesElements = document.querySelectorAll("[data-color='red']");
+  const bluePiecesElements = document.querySelectorAll("[data-color='blue']");
 
-const redPieces = Array.from(redPiecesElements);
-const bluePieces = Array.from(bluePiecesElements);
-
-const initPlayerPieces = (player: PLAYER): void => {
+  const redPieces = Array.from(redPiecesElements);
+  const bluePieces = Array.from(bluePiecesElements);
+  
   if (player === PLAYER.RED) {
     gameControl.currentPlayer = PLAYER.RED;
-    addListenersToPieces(redPieces, bluePieces);
+    redPieces.forEach(piece => piece && piece.addEventListener("click", callback));
+    bluePieces.forEach(piece => piece && piece.removeEventListener("click", callback));
   }
   else if (player === PLAYER.BLUE) {
     gameControl.currentPlayer = PLAYER.BLUE;
-    addListenersToPieces(bluePieces, redPieces);
+    bluePieces.forEach(piece => piece && piece.addEventListener("click", callback));
+    redPieces.forEach(piece => piece && piece.removeEventListener("click", callback));
   }
   else throw new Error("no valid player selecetd");
 };

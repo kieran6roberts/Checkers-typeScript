@@ -1,13 +1,12 @@
-import movePieceWithClickHandler from "./movePieceWithClickHandler";
 import { ELEMENTS, MOVE } from "./control";
 
-const toggleMoveToSquareHandler = (element: ELEMENTS, mode: MOVE): void => {
+const toggleMoveToSquareHandler = (element: ELEMENTS, mode: MOVE, callback: any): void => {
   if (Array.isArray(element)) {
-    element.forEach(el => el.removeEventListener("click", movePieceWithClickHandler));
+    element.forEach(el => el.removeEventListener("click", callback));
   }
   else {
-    mode === MOVE.ENABLE && element.addEventListener("click", movePieceWithClickHandler);
-    mode === MOVE.RESET && element.removeEventListener("click", movePieceWithClickHandler);
+    mode === MOVE.ENABLE && element.addEventListener("click", callback);
+    mode === MOVE.RESET && element.removeEventListener("click", callback);
   }
 };
 

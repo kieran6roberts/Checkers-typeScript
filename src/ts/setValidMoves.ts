@@ -5,9 +5,9 @@ import { BOARD_STATE,
   selectedPiece } from "./control";
 import toggleMoveToSquareHandler from "./toggleMoveToSquareHandler";
 import toggleValidMoveSquare from "./toggleValidMoveSquare";
-import resetSettings from "./resetSettings";
+import movePieceWithClickHandler from "./movePieceWithClickHandler";
+import changePlayerTurn from "./changePlayerTurn";
 
-  
 const setValidMoves = (): void => {
   const squaresElements = document.querySelectorAll(".square");
   const squares = Array.from(squaresElements);
@@ -34,7 +34,7 @@ const setValidMoves = (): void => {
           checkForLightColoredSquare(14) &&
           squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") === PLAYER.BLUE) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 14], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE, movePieceWithClickHandler);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 7];
         canPieceJump = true;
       } 
@@ -44,7 +44,7 @@ const setValidMoves = (): void => {
           checkForLightColoredSquare(18) &&
           squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") === PLAYER.BLUE) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 18], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE, movePieceWithClickHandler);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 9];
         canPieceJump = true;
       }
@@ -56,7 +56,7 @@ const setValidMoves = (): void => {
           checkForLightColoredSquare(-14) &&
           squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
         toggleValidMoveSquare(squares[PIECE_INDEX - 14], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE, movePieceWithClickHandler);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 7];
         canPieceJump = true;
       } 
@@ -66,7 +66,7 @@ const setValidMoves = (): void => {
           checkForLightColoredSquare(-18) &&
           squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
         toggleValidMoveSquare(squares[PIECE_INDEX - 18], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE, movePieceWithClickHandler);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 9];
         canPieceJump = true;
       } 
@@ -78,7 +78,7 @@ const setValidMoves = (): void => {
           squares[PIECE_INDEX + 7].firstElementChild &&
           squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 14], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE, movePieceWithClickHandler);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 7];
         canPieceJump = true;
       } 
@@ -87,7 +87,7 @@ const setValidMoves = (): void => {
           squares[PIECE_INDEX + 9].firstElementChild &&
           squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
         toggleValidMoveSquare(squares[PIECE_INDEX + 18], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE, movePieceWithClickHandler);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 9];
         canPieceJump = true;
       } 
@@ -96,7 +96,7 @@ const setValidMoves = (): void => {
           squares[PIECE_INDEX - 7].firstElementChild &&
           squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
         toggleValidMoveSquare(squares[PIECE_INDEX - 14], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE, movePieceWithClickHandler);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 7];
         canPieceJump = true;
       } 
@@ -105,7 +105,7 @@ const setValidMoves = (): void => {
           squares[PIECE_INDEX - 9].firstElementChild &&
           squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
         toggleValidMoveSquare(squares[PIECE_INDEX - 18], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE);
+        toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE, movePieceWithClickHandler);
         selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 9];
         canPieceJump = true;
       } 
@@ -117,11 +117,11 @@ const setValidMoves = (): void => {
       selectedPiece.isPieceKing && selectedPiece.firstMove) {
     if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
       PIECE_INDEX + 7 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 7], "add");
-      PIECE_INDEX + 7 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE.ENABLE);
+      PIECE_INDEX + 7 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE.ENABLE, movePieceWithClickHandler);
     }
     if (checkForEmptySquare(9) && checkForLightColoredSquare(9)) {
       PIECE_INDEX + 9 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 9], "add");
-      PIECE_INDEX + 9 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE.ENABLE);
+      PIECE_INDEX + 9 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE.ENABLE, movePieceWithClickHandler);
     }
   } 
   
@@ -129,18 +129,18 @@ const setValidMoves = (): void => {
         selectedPiece.isPieceKing && selectedPiece.firstMove) {
     if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
       PIECE_INDEX - 7 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 7], "add");
-      PIECE_INDEX - 7 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE.ENABLE);
+      PIECE_INDEX - 7 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE.ENABLE, movePieceWithClickHandler);
     }
     if (checkForEmptySquare(-9) && checkForLightColoredSquare(-9)) {
       PIECE_INDEX - 9 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 9], "add");
-      PIECE_INDEX - 9 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE.ENABLE);
+      PIECE_INDEX - 9 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE.ENABLE, movePieceWithClickHandler);
     }
   }
   
   if (selectedPiece.firstMove || !selectedPiece.firstMove && checkForOpponentJump()) {
     checkForOpponentJump();
   } else if (!selectedPiece.firstMove && !checkForOpponentJump()) {
-    resetSettings();
+    changePlayerTurn();
   }
 };
 

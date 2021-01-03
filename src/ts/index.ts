@@ -1,9 +1,10 @@
-import * as GameControl from "./control";
 import appendScoreToDOM from "./appendScoreToDOM";
 import initPlayerPieces from "./initPlayerPieces";
+import setCurrentPieceHandler from "./setCurrentPieceHandler";
+import { gameControl } from "./control";
 
 const gameInit = (): void => {
-  initPlayerPieces(GameControl.PLAYER.RED);
+  initPlayerPieces(gameControl.currentPlayer, setCurrentPieceHandler);
   appendScoreToDOM();
 };
 
