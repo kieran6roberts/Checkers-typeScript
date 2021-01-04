@@ -1,6 +1,6 @@
 import { gameControl } from "./control";
 
-const checkForWinCondition = (pieces: unknown): void => {
+const checkForWinCondition = (pieces: number): void => {
   const newGameBtn = document.querySelector(".win-modal__reset");
   const winModal = document.querySelector(".win-modal");
   const winModalWinner = document.querySelector(".win-modal__winner");

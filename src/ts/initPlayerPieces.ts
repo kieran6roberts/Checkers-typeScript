@@ -1,6 +1,6 @@
 import { gameControl, PLAYER } from "./control";
 
-const initPlayerPieces = (player: PLAYER, callback: any): void => {
+const initPlayerPieces = (player: PLAYER, callback: (e: Event | string) => void): void => {
   const redPiecesElements = document.querySelectorAll("[data-color='red']");
   const bluePiecesElements = document.querySelectorAll("[data-color='blue']");
 

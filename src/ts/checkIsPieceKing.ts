@@ -6,7 +6,7 @@ const checkIsPieceKing = (): boolean => {
   let startSlice: number;
   let endSlice: number;
 
-  if(gameControl.currentPlayer === PLAYER.BLUE) {
+  if (gameControl.currentPlayer === PLAYER.BLUE) {
     startSlice = 0;
     endSlice = 8;
   } else {

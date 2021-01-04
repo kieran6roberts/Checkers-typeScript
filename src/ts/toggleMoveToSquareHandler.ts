@@ -1,6 +1,6 @@
 import { ELEMENTS, MOVE } from "./control";
 
-const toggleMoveToSquareHandler = (element: ELEMENTS, mode: MOVE, callback: any): void => {
+const toggleMoveToSquareHandler = (element: ELEMENTS, mode: MOVE, callback: (e: Event) => void): void => {
   if (Array.isArray(element)) {
     element.forEach(el => el.removeEventListener("click", callback));
   }
