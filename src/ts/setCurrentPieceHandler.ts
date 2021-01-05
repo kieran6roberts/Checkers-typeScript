@@ -5,13 +5,12 @@ import { selectedPiece, BOARD_STATE } from "./control";
 
 function setCurrentPieceHandler(event: Event | string): void {
   let activePieceID: string | undefined;
-  let target: Element | undefined;
 
   if (typeof event === "string") {
     event !== selectedPiece.id && removeValidDrops(movePieceWithClickHandler);
     activePieceID = event;
   } else {
-    target = (<HTMLElement>event.target);
+    let target = event.target as HTMLButtonElement;
     target.id !== selectedPiece.id && removeValidDrops(movePieceWithClickHandler);
     target.getAttribute("data-color") ? activePieceID = target.id : activePieceID = target.parentElement?.id;
   }

@@ -1,8 +1,9 @@
 import { gameControl } from "./control";
 
+const redScoreElement = document.querySelector(".scoreboard__red-score");
+const blueScoreElement = document.querySelector(".scoreboard__blue-score");
+
 const appendScoreToDOM = (): void => {
-  const redScoreElement = document.querySelector(".scoreboard__red-score");
-  const blueScoreElement = document.querySelector(".scoreboard__blue-score");
   
   if (redScoreElement && blueScoreElement) {
     redScoreElement.textContent = gameControl.redPlayerPieces.toString();

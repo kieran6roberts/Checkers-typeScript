@@ -1,4 +1,5 @@
 import { BOARD_STATE,
+  CLASS,
   gameControl,
   MOVE,
   PLAYER,
@@ -8,14 +9,15 @@ import toggleValidMoveSquare from "./toggleValidMoveSquare";
 import movePieceWithClickHandler from "./movePieceWithClickHandler";
 import changePlayerTurn from "./changePlayerTurn";
 
+const squaresElements = document.querySelectorAll(".square");
+const squares = Array.from(squaresElements);
+
 const setValidMoves = (): void => {
-  const squaresElements = document.querySelectorAll(".square");
-  const squares = Array.from(squaresElements);
   const PIECE_INDEX = selectedPiece.index;
   const LIGHT = "light";
   
-  const checkForEmptySquare = (num: number): boolean | undefined => {
-    if (PIECE_INDEX + num < 0 || PIECE_INDEX + num > 63) return;
+  const checkForEmptySquare = (num: number): boolean => {
+    if (PIECE_INDEX + num < 0 || PIECE_INDEX + num > 63) return false;
   
     if (BOARD_STATE[PIECE_INDEX + num] == null && 
         squares[PIECE_INDEX + num].firstElementChild == null) {
@@ -32,7 +34,7 @@ const setValidMoves = (): void => {
         squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild && 
         squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild?.getAttribute("data-color") === player) {
           
-          toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], "add");
+          toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], CLASS.ADD);
           toggleMoveToSquareHandler(squares[PIECE_INDEX + jumpPosition], MOVE.ENABLE, movePieceWithClickHandler);
           selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + (jumpPosition / 2)];
           return true;
@@ -45,7 +47,7 @@ const setValidMoves = (): void => {
         squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild &&
         squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
 
-          toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], "add");
+          toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], CLASS.ADD);
           toggleMoveToSquareHandler(squares[PIECE_INDEX + jumpPosition], MOVE.ENABLE, movePieceWithClickHandler);
           selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + (jumpPosition / 2)];
           return true;
@@ -78,11 +80,11 @@ const setValidMoves = (): void => {
   if (gameControl.currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing && selectedPiece.firstMove || 
       selectedPiece.isPieceKing && selectedPiece.firstMove) {
     if (checkForEmptySquare(7) && checkForLightColoredSquare(7)) { 
-      PIECE_INDEX + 7 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 7], "add");
+      PIECE_INDEX + 7 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 7], CLASS.ADD);
       PIECE_INDEX + 7 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 7], MOVE.ENABLE, movePieceWithClickHandler);
     }
     if (checkForEmptySquare(9) && checkForLightColoredSquare(9)) {
-      PIECE_INDEX + 9 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 9], "add");
+      PIECE_INDEX + 9 < 63 && toggleValidMoveSquare(squares[PIECE_INDEX + 9], CLASS.ADD);
       PIECE_INDEX + 9 < 63 && toggleMoveToSquareHandler(squares[PIECE_INDEX + 9], MOVE.ENABLE, movePieceWithClickHandler);
     }
   } 
@@ -90,11 +92,11 @@ const setValidMoves = (): void => {
   if (gameControl.currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing && selectedPiece.firstMove || 
         selectedPiece.isPieceKing && selectedPiece.firstMove) {
     if (checkForEmptySquare(-7) && checkForLightColoredSquare(-7)) {
-      PIECE_INDEX - 7 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 7], "add");
+      PIECE_INDEX - 7 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 7], CLASS.ADD);
       PIECE_INDEX - 7 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 7], MOVE.ENABLE, movePieceWithClickHandler);
     }
     if (checkForEmptySquare(-9) && checkForLightColoredSquare(-9)) {
-      PIECE_INDEX - 9 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 9], "add");
+      PIECE_INDEX - 9 > 0 && toggleValidMoveSquare(squares[PIECE_INDEX - 9], CLASS.ADD);
       PIECE_INDEX - 9 > 0 && toggleMoveToSquareHandler(squares[PIECE_INDEX - 9], MOVE.ENABLE, movePieceWithClickHandler);
     }
   }
