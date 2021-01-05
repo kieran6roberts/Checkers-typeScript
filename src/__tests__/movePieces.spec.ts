@@ -11,7 +11,7 @@ describe("players are able to move pieces, turns change and jump is possible", (
     document.body.appendChild(mockFullBoard);
 
     test("setValidMoves sets correct move squares", () => {
-        const { getAllByRole, getByTestId } = within(mockFullBoard);
+        const { getAllByRole, getByTestId, getByText } = within(mockFullBoard);
 
         initPlayerPieces(gameControl.currentPlayer, setCurrentPieceHandler);
         appendScoreToDOM();
@@ -65,5 +65,8 @@ describe("players are able to move pieces, turns change and jump is possible", (
 
         expect(blueBtn1).not.toBeInTheDocument();
         expect(getByTestId("40")).toContainElement(redBtn9);
+
+        // score is updated
+        expect(getByText("11")).toBeInTheDocument();
     });
 });

@@ -10,22 +10,22 @@ mockFullBoard.innerHTML = `
             </p>
             <p class="scoreboard__red-score"></p>
         </div>
-        <div class="scoreboard__blue">
-            <p class="scoreboard__blue-turn">
-                Blue Player Turn
-            </p>
-            <p class="scoreboard__blue-score"></p>
-        </div>
-        </div>
-        <div class="win-modal">
-        <div class="win-modal__content">
-            <div class="win-modal__winner">
-                
+            <div class="scoreboard__blue">
+                <p class="scoreboard__blue-turn">
+                    Blue Player Turn
+                </p>
+                <p class="scoreboard__blue-score"></p>
             </div>
-            <button class="win-modal__reset">
-                New Game
-            </button>
         </div>
+        <div data-testid="win-modal" class="win-modal">
+            <div class="win-modal__content">
+                <div class="win-modal__winner">
+                    
+                </div>
+                <button class="win-modal__reset">
+                    New Game
+                </button>
+            </div>
         </div>
         <div class="wrapper">
         <div class="squares">
