@@ -20,97 +20,59 @@ const setValidMoves = (): void => {
     if (BOARD_STATE[PIECE_INDEX + num] == null && 
         squares[PIECE_INDEX + num].firstElementChild == null) {
       return true;
-    } else false;
+    } else return false;
   };
   
   const checkForLightColoredSquare = (num: number) => squares[PIECE_INDEX + num].getAttribute("data-color") === LIGHT ? true : false;
+
+  const checkForPieceJump = (jumpPosition: number, player: PLAYER): boolean => {
+    if (BOARD_STATE[PIECE_INDEX + jumpPosition] == null &&
+        (PIECE_INDEX + jumpPosition < 63 || PIECE_INDEX + jumpPosition > 0 ) &&
+        checkForLightColoredSquare(jumpPosition) &&
+        squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild && 
+        squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild?.getAttribute("data-color") === player) {
+          
+          toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], "add");
+          toggleMoveToSquareHandler(squares[PIECE_INDEX + jumpPosition], MOVE.ENABLE, movePieceWithClickHandler);
+          selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + (jumpPosition / 2)];
+          return true;
+    } else return false;
+};
+
+  const checkForKingPieceJump = (jumpPosition: number, limit: number) => {
+    if (BOARD_STATE[PIECE_INDEX + jumpPosition] == null &&
+        PIECE_INDEX + jumpPosition < limit || PIECE_INDEX + jumpPosition > limit &&
+        squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild &&
+        squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
+
+          toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], "add");
+          toggleMoveToSquareHandler(squares[PIECE_INDEX + jumpPosition], MOVE.ENABLE, movePieceWithClickHandler);
+          selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + (jumpPosition / 2)];
+          return true;
+        } else return false;
+  };
   
   const checkForOpponentJump = (): boolean => {  
     let canPieceJump = false;
   
     if (gameControl.currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing) {
-      if (BOARD_STATE[PIECE_INDEX + 14] == null &&
-          PIECE_INDEX + 14 < 63 &&
-          checkForLightColoredSquare(14) &&
-          squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") === PLAYER.BLUE) {
-        toggleValidMoveSquare(squares[PIECE_INDEX + 14], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE, movePieceWithClickHandler);
-        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 7];
+      if (checkForPieceJump(14, PLAYER.BLUE) || checkForPieceJump(18, PLAYER.BLUE)) {
         canPieceJump = true;
       } 
-        
-      if (BOARD_STATE[PIECE_INDEX + 18] == null &&
-          PIECE_INDEX + 18 < 63 &&
-          checkForLightColoredSquare(18) &&
-          squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") === PLAYER.BLUE) {
-        toggleValidMoveSquare(squares[PIECE_INDEX + 18], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE, movePieceWithClickHandler);
-        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 9];
-        canPieceJump = true;
-      }
     } 
   
     if (gameControl.currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing) {
-      if (BOARD_STATE[PIECE_INDEX - 14] == null &&
-          PIECE_INDEX - 14 > 0 &&
-          checkForLightColoredSquare(-14) &&
-          squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
-        toggleValidMoveSquare(squares[PIECE_INDEX - 14], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE, movePieceWithClickHandler);
-        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 7];
-        canPieceJump = true;
-      } 
-  
-      if (BOARD_STATE[PIECE_INDEX - 18] == null &&
-          PIECE_INDEX - 18 > 0 &&
-          checkForLightColoredSquare(-18) &&
-          squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") === PLAYER.RED) {
-        toggleValidMoveSquare(squares[PIECE_INDEX - 18], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE, movePieceWithClickHandler);
-        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 9];
+      if (checkForPieceJump(-14, PLAYER.RED) || checkForPieceJump(-18, PLAYER.RED)) {
         canPieceJump = true;
       } 
     }
       
     if (selectedPiece.isPieceKing) {
-      if (BOARD_STATE[PIECE_INDEX + 14] == null &&
-          PIECE_INDEX + 14 < 63 &&
-          squares[PIECE_INDEX + 7].firstElementChild &&
-          squares[PIECE_INDEX + 7].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
-        toggleValidMoveSquare(squares[PIECE_INDEX + 14], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 14], MOVE.ENABLE, movePieceWithClickHandler);
-        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 7];
-        canPieceJump = true;
-      } 
-      if (BOARD_STATE[PIECE_INDEX + 18] == null &&
-          PIECE_INDEX + 18 < 63 &&
-          squares[PIECE_INDEX + 9].firstElementChild &&
-          squares[PIECE_INDEX + 9].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
-        toggleValidMoveSquare(squares[PIECE_INDEX + 18], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX + 18], MOVE.ENABLE, movePieceWithClickHandler);
-        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + 9];
-        canPieceJump = true;
-      } 
-      if (BOARD_STATE[PIECE_INDEX - 14] == null &&
-          PIECE_INDEX - 14 > 0 &&
-          squares[PIECE_INDEX - 7].firstElementChild &&
-          squares[PIECE_INDEX - 7].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
-        toggleValidMoveSquare(squares[PIECE_INDEX - 14], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 14], MOVE.ENABLE, movePieceWithClickHandler);
-        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 7];
-        canPieceJump = true;
-      } 
-      if (BOARD_STATE[PIECE_INDEX - 18] == null &&
-          PIECE_INDEX - 18 > 0 &&
-          squares[PIECE_INDEX - 9].firstElementChild &&
-          squares[PIECE_INDEX - 9].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
-        toggleValidMoveSquare(squares[PIECE_INDEX - 18], "add");
-        toggleMoveToSquareHandler(squares[PIECE_INDEX - 18], MOVE.ENABLE, movePieceWithClickHandler);
-        selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX - 9];
+      if (checkForKingPieceJump(14, 63) || checkForKingPieceJump(18, 63) || checkForKingPieceJump(-14, 0) || checkForKingPieceJump(-18, 0)) {
         canPieceJump = true;
       } 
     }
-    return canPieceJump ? true : false;
+    return canPieceJump;
   };
   
   if (gameControl.currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing && selectedPiece.firstMove || 
