@@ -119,6 +119,7 @@ body {
     align-items: center;
     align-self: center;
     border-radius: 50%;
+    border: none;
     display: flex;
     height: 2.5rem;
     justify-content: center;
@@ -129,6 +130,11 @@ body {
 
 .piece[data-color="blue"]:hover {background-color: var(--piece2-hover);}
 .piece[data-color="red"]:hover {background-color: var(--piece1-hover);}
+
+.piece:focus {
+    outline: none;
+    border: 3px solid #fff;
+}
 
 .square {
     align-items: center;

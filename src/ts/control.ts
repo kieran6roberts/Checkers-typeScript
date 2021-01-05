@@ -26,7 +26,7 @@ enum MOVE {
   
 type ELEMENTS = Element | Element[];
 
-type CONTROL = {
+interface CONTROL {
     currentPlayer: PLAYER,
     redPlayerPieces: number,
     bluePlayerPieces: number
@@ -38,7 +38,7 @@ let gameControl: CONTROL = {
   bluePlayerPieces: 12
 };
 
-type SELECTED_PIECE = {
+interface SELECTED_PIECE {
     id: string,
     index: number,
     isPieceKing: boolean,

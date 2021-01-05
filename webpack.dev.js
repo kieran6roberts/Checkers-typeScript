@@ -8,7 +8,7 @@ module.exports = merge(common, {
     contentBase: "./dist/",
     compress: true,
     open: true,
-    port: 3000,
+    port: 5500,
     hot: true,
     publicPath: "/",
   }
