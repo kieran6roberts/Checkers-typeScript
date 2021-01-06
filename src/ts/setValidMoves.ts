@@ -9,10 +9,10 @@ import toggleValidMoveSquare from "./toggleValidMoveSquare";
 import movePieceWithClickHandler from "./movePieceWithClickHandler";
 import changePlayerTurn from "./changePlayerTurn";
 
-const squaresElements = document.querySelectorAll(".square");
-const squares = Array.from(squaresElements);
 
 const setValidMoves = (): void => {
+  const squaresElements = document.querySelectorAll(".square");
+  const squares = Array.from(squaresElements);
   const PIECE_INDEX = selectedPiece.index;
   const LIGHT = "light";
   
@@ -20,12 +20,12 @@ const setValidMoves = (): void => {
     if (PIECE_INDEX + num < 0 || PIECE_INDEX + num > 63) return false;
   
     if (BOARD_STATE[PIECE_INDEX + num] == null && 
-        squares[PIECE_INDEX + num].firstElementChild == null) {
+        squares[PIECE_INDEX + num]?.firstElementChild == null) {
       return true;
     } else return false;
   };
   
-  const checkForLightColoredSquare = (num: number) => squares[PIECE_INDEX + num].getAttribute("data-color") === LIGHT ? true : false;
+  const checkForLightColoredSquare = (num: number) => squares[PIECE_INDEX + num]?.getAttribute("data-color") === LIGHT ? true : false;
 
   const checkForPieceJump = (jumpPosition: number, player: PLAYER): boolean => {
     if (BOARD_STATE[PIECE_INDEX + jumpPosition] == null &&

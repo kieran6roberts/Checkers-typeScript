@@ -5,13 +5,13 @@ import initPlayerPieces from "./initPlayerPieces";
 import setCurrentPieceHandler from "./setCurrentPieceHandler";
 import { gameControl, PLAYER } from "./control";
 
-const redPlayerElement = document.querySelector(".scoreboard__red");
-const bluePlayerElement = document.querySelector(".scoreboard__blue");
 
 const changePlayerTurn = (): void => {
+  const redPlayerElement = document.querySelector(".scoreboard__red");
+  const bluePlayerElement = document.querySelector(".scoreboard__blue");
+
   resetSelectedPiece();
   removeValidDrops(movePieceWithClickHandler);
-
   
   if (gameControl.currentPlayer === PLAYER.RED) {
     gameControl.currentPlayer = PLAYER.BLUE;
