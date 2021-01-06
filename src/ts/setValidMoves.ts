@@ -28,11 +28,12 @@ const setValidMoves = (): void => {
   const checkForLightColoredSquare = (num: number) => squares[PIECE_INDEX + num]?.getAttribute("data-color") === LIGHT ? true : false;
 
   const checkForPieceJump = (jumpPosition: number, player: PLAYER): boolean => {
+    const jumpSquare = squares[PIECE_INDEX + (jumpPosition / 2)];
+
     if (BOARD_STATE[PIECE_INDEX + jumpPosition] == null &&
         (PIECE_INDEX + jumpPosition < 63 || PIECE_INDEX + jumpPosition > 0 ) &&
         checkForLightColoredSquare(jumpPosition) &&
-        squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild && 
-        squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild?.getAttribute("data-color") === player) {
+        jumpSquare?.firstElementChild && jumpSquare?.firstElementChild?.getAttribute("data-color") === player) {
           
           toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], CLASS.ADD);
           toggleMoveToSquareHandler(squares[PIECE_INDEX + jumpPosition], MOVE.ENABLE, movePieceWithClickHandler);
@@ -41,11 +42,12 @@ const setValidMoves = (): void => {
     } else return false;
 };
 
-  const checkForKingPieceJump = (jumpPosition: number, limit: number) => {
+  const checkForKingPieceJump = (jumpPosition: number) => {
+    const jumpSquare = squares[PIECE_INDEX + (jumpPosition / 2)];
+
     if (BOARD_STATE[PIECE_INDEX + jumpPosition] == null &&
-        PIECE_INDEX + jumpPosition < limit || PIECE_INDEX + jumpPosition > limit &&
-        squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild &&
-        squares[PIECE_INDEX + (jumpPosition / 2)].firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
+        (PIECE_INDEX + jumpPosition < 63 && PIECE_INDEX + jumpPosition > 0 ) &&
+        jumpSquare?.firstElementChild != null && jumpSquare?.firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
 
           toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], CLASS.ADD);
           toggleMoveToSquareHandler(squares[PIECE_INDEX + jumpPosition], MOVE.ENABLE, movePieceWithClickHandler);
@@ -53,27 +55,34 @@ const setValidMoves = (): void => {
           return true;
         } else return false;
   };
+
+  const checkAllJumps = (arr: number[], callback: (...args: any) => boolean, player?: PLAYER) => {
+    let jumpResults: boolean[];
+
+    if (player) {
+      jumpResults = arr.map(idx => callback(idx, player));
+    }
+    else {
+      jumpResults = arr.map(idx => callback(idx));
+    }
+    return jumpResults.includes(true) ? true : false;
+  };
   
   const checkForOpponentJump = (): boolean => {  
     let canPieceJump = false;
   
     if (gameControl.currentPlayer === PLAYER.RED && !selectedPiece.isPieceKing) {
-      if (checkForPieceJump(14, PLAYER.BLUE) || checkForPieceJump(18, PLAYER.BLUE)) {
-        canPieceJump = true;
-      } 
+      checkAllJumps([14, 18], checkForPieceJump, PLAYER.BLUE) ? canPieceJump = true : null;
     } 
-  
+    
     if (gameControl.currentPlayer === PLAYER.BLUE && !selectedPiece.isPieceKing) {
-      if (checkForPieceJump(-14, PLAYER.RED) || checkForPieceJump(-18, PLAYER.RED)) {
-        canPieceJump = true;
-      } 
+      checkAllJumps([-14, -18], checkForPieceJump, PLAYER.RED) ? canPieceJump = true : null;
     }
       
     if (selectedPiece.isPieceKing) {
-      if (checkForKingPieceJump(14, 63) || checkForKingPieceJump(18, 63) || checkForKingPieceJump(-14, 0) || checkForKingPieceJump(-18, 0)) {
-        canPieceJump = true;
-      } 
+      checkAllJumps([14, 18, -14, -18], checkForKingPieceJump) ? canPieceJump = true : null;
     }
+
     return canPieceJump;
   };
   

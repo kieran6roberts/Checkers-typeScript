@@ -7,7 +7,7 @@ function setCurrentPieceHandler(event: Event | string): void {
   let activePieceID: string | undefined;
 
   if (typeof event === "string") {
-    event !== selectedPiece.id && removeValidDrops(movePieceWithClickHandler);
+    removeValidDrops(movePieceWithClickHandler);
     activePieceID = event;
   } else {
     let target = event.target as HTMLButtonElement;

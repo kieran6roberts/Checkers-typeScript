@@ -11,14 +11,16 @@ const checkIsPieceKing = (): boolean => {
     endSlice = 8;
   } else {
     startSlice = 56;
-    endSlice = 63;
+    endSlice = 64;
   }
 
-  BOARD_STATE.slice(startSlice, endSlice).find(piece => {
-    if (piece?.includes(selectedPiece.id)) {
+  console.log(BOARD_STATE.slice(startSlice, endSlice));
+
+  BOARD_STATE.slice(startSlice, endSlice).forEach(piece => {
+    if (piece === selectedPiece.id) {
       setPieceToKing(piece);
-      isKing = true;
-    } else isKing = false;
+      return isKing = true;
+    }
   });
 
   return isKing;

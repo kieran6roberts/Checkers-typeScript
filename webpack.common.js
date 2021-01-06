@@ -26,7 +26,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "TypeScript Checkers",
+      title: "Checkers Board Game",
       filename: "index.html",
       template: "./index.html"
     }),

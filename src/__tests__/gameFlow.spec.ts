@@ -1,3 +1,4 @@
+import userEvent from "@testing-library/user-event";
 import { within } from "@testing-library/dom";
 
 import appendScoreToDOM from "../ts/appendScoreToDOM";
@@ -5,9 +6,8 @@ import initPlayerPieces from "../ts/initPlayerPieces";
 import setCurrentPieceHandler from "../ts/setCurrentPieceHandler";
 import { gameControl } from "../ts/control";
 import { mockFullBoard } from "../../setupTests";
-import userEvent from "@testing-library/user-event";
 
-describe("players are able to move pieces, turns change and jump is possible", () => {
+describe("game flow integration", () => {
     document.body.appendChild(mockFullBoard);
 
     test("setValidMoves sets correct move squares", () => {
@@ -38,10 +38,12 @@ describe("players are able to move pieces, turns change and jump is possible", (
 
         userEvent.click(getByTestId("26"));
 
+        // movePieceWithClickHandler appends piece to new square
         expect(getByTestId("26")).toContainElement(redBtn9);
         expect(getByTestId("17")).not.toContainElement(redBtn9);
 
         const blueBtn1 = getAllByRole("button")[13];
+        // changes turn to blue player
         // blue piece 1 should now be able to move to square 33
         userEvent.click(blueBtn1);
 
@@ -56,6 +58,7 @@ describe("players are able to move pieces, turns change and jump is possible", (
 
         expect(getByTestId("40")).not.toHaveClass("valid-drop");
         
+        // changes turn to red player
         // red piece 9 should now be able to jump blue piece 1
         userEvent.click(redBtn9);
         
@@ -63,10 +66,11 @@ describe("players are able to move pieces, turns change and jump is possible", (
 
         userEvent.click(getByTestId("40"));
 
+        // removePieceAfterJump
         expect(blueBtn1).not.toBeInTheDocument();
         expect(getByTestId("40")).toContainElement(redBtn9);
 
-        // score is updated
+        // score is updated for correct player
         expect(getByText("11")).toBeInTheDocument();
     });
 });

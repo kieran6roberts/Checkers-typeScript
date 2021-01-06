@@ -59,6 +59,7 @@ body {
     left: 0;
     right: 0;
     position: absolute;
+    text-transform: uppercase;
     top: 0;
     z-index: 99;
 }
