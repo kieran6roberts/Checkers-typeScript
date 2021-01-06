@@ -37,7 +37,7 @@ const setValidMoves = (): void => {
           
           toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], CLASS.ADD);
           toggleMoveToSquareHandler(squares[PIECE_INDEX + jumpPosition], MOVE.ENABLE, movePieceWithClickHandler);
-          selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + (jumpPosition / 2)];
+          //selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + (jumpPosition / 2)];
           return true;
     } else return false;
 };
@@ -51,7 +51,7 @@ const setValidMoves = (): void => {
 
           toggleValidMoveSquare(squares[PIECE_INDEX + jumpPosition], CLASS.ADD);
           toggleMoveToSquareHandler(squares[PIECE_INDEX + jumpPosition], MOVE.ENABLE, movePieceWithClickHandler);
-          selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + (jumpPosition / 2)];
+          //selectedPiece.jumpPieceID = BOARD_STATE[PIECE_INDEX + (jumpPosition / 2)];
           return true;
         } else return false;
   };
