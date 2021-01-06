@@ -2,7 +2,7 @@ import setPieceToKing from "./setPieceToKing";
 import { BOARD_STATE, gameControl, PLAYER, selectedPiece} from "./control";
 
 const checkIsPieceKing = (): boolean => {
-  let isKing = false;
+  let isNewKing = false;
   let startSlice: number;
   let endSlice: number;
 
@@ -14,16 +14,13 @@ const checkIsPieceKing = (): boolean => {
     endSlice = 64;
   }
 
-  console.log(BOARD_STATE.slice(startSlice, endSlice));
-
   BOARD_STATE.slice(startSlice, endSlice).forEach(piece => {
     if (piece === selectedPiece.id) {
-      setPieceToKing(piece);
-      return isKing = true;
+      setPieceToKing(piece) ? isNewKing = true : null;
     }
   });
 
-  return isKing;
+  return isNewKing;
 };
 
 export default checkIsPieceKing;

@@ -52,7 +52,7 @@ body {
 
 .win-modal {
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.3);
     bottom: 0;
     display: none;
     justify-content: center;
@@ -67,6 +67,7 @@ body {
 .win-modal__content {
     align-items: center;
     background-color: var(--sqr2-clr);
+    border: 2px solid #333;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -77,9 +78,14 @@ body {
 .win-modal__reset {
     cursor: pointer;
     border: 2px solid var(--sqr1-clr);
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     padding: 1rem 2rem;
     text-transform: uppercase;
+    transition: all 150ms ease-in-out;
+}
+
+.win-modal__reset:hover {
+    background-color: rgb(219, 211, 211);
 }
 
 .wrapper {
