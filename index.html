@@ -3,29 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Kieran Roberts">
+    <meta name="description" content="Web based checkers board game created by Kieran Roberts">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>Play Checkers</title>
+
+
 </head>
 <body>
     <div class="scoreboard">
         <div class="scoreboard__red player-turn">
             <p class="scoreboard__red-turn">
-                Red Player Turn
+                <span class="scoreboard__red--active">* </span>Red Player Turn
             </p>
             <p class="scoreboard__red-score"></p>
         </div>
         <div class="scoreboard__blue">
             <p class="scoreboard__blue-turn">
-                Blue Player Turn
+                <span class="scoreboard__blue--active">* </span>Blue Player Turn
             </p>
             <p class="scoreboard__blue-score"></p>
         </div>
     </div>
     <div class="win-modal">
         <div class="win-modal__content">
-            <div class="win-modal__winner">
-                
-            </div>
+            <div class="win-modal__winner">*</div>
             <button class="win-modal__reset">
-                New Game
+                Start New Game
             </button>
         </div>
     </div>
@@ -34,53 +46,53 @@
             <!---row 1-->
             <div data-color="dark" class="square" id="0"></div>
             <div data-color="light" class="square" id="1">
-                <button data-color="red" class="piece a2" id="a2"></button>
+                <button aria-label="move red piece" data-color="red" class="piece a2" id="a2"></button>
             </div>
             <div data-color="dark" class="square" id="2"></div>
             <div data-color="light" class="square" id="3">
-                <button data-color="red" class="piece a4" id="a4"></button>
+                <button aria-label="move red piece" data-color="red" class="piece a4" id="a4"></button>
             </div>
             <div data-color="dark" class="square" id="4"></div>
             <div data-color="light" class="square" id="5">
-                <button data-color="red" class="piece a6" id="a6"></button>
+                <button aria-label="move red piece" data-color="red" class="piece a6" id="a6"></button>
             </div>
             <div data-color="dark" class="square" id="6"></div>
             <div data-color="light" class="square" id="7">
-                <button data-color="red" class="piece a8" id="a8"></button>
+                <button aria-label="move red piece" data-color="red" class="piece a8" id="a8"></button>
             </div>
             <!---row 2-->
             <div data-color="light" class="square" id="8">
-                <button data-color="red" class="piece b1" id="b1"></button>
+                <button aria-label="move red piece" data-color="red" class="piece b1" id="b1"></button>
             </div>
             <div data-color="dark" class="square" id="9"></div>
             <div data-color="light" class="square" id="10">
-                <button data-color="red" class="piece b3" id="b3"></button>
+                <button aria-label="move red piece" data-color="red" class="piece b3" id="b3"></button>
             </div>
             <div data-color="dark" class="square" id="11"></div>
             <div data-color="light" class="square" id="12">
-                <button data-color="red" class="piece b5" id="b5"></button>
+                <button aria-label="move red piece" data-color="red" class="piece b5" id="b5"></button>
             </div>
             <div data-color="dark" class="square" id="13"></div>
             <div data-color="light" class="square" id="14">
-                <button data-color="red" class="piece b7" id="b7"></button>
+                <button aria-label="move red piece" data-color="red" class="piece b7" id="b7"></button>
             </div>
             <div data-color="dark" class="square" id="15"></div>
             <!---row 3-->
             <div data-color="dark" class="square" id="16"></div>
             <div data-color="light" class="square" id="17">
-                <button data-color="red" class="piece c2" id="c2"></button>
+                <button aria-label="move red piece" data-color="red" class="piece c2" id="c2"></button>
             </div>
             <div data-color="dark" class="square" id="18"></div>
             <div data-color="light" class="square" id="19">
-                <button data-color="red" class="piece c4" id="c4"></button>
+                <button aria-label="move red piece" data-color="red" class="piece c4" id="c4"></button>
             </div>
             <div data-color="dark" class="square" id="20"></div>
             <div data-color="light" class="square" id="21">
-                <button data-color="red" class="piece c6" id="c6"></button>
+                <button aria-label="move red piece" data-color="red" class="piece c6" id="c6"></button>
             </div>
             <div data-color="dark" class="square" id="22"></div>
             <div data-color="light" class="square" id="23">
-                <button data-color="red" class="piece c8" id="c8"></button>
+                <button aria-label="move red piece" data-color="red" class="piece c8" id="c8"></button>
             </div>
             <!---row 4-->
             <div data-color="light" class="square" id="24"></div>
@@ -102,53 +114,53 @@
             <div data-color="light" class="square" id="39"></div>
             <!---row 6-->
             <div data-color="light" class="square" id="40">
-                <button data-color="blue" class="piece f1" id="f1"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece f1" id="f1"></button>
             </div>
             <div data-color="dark" class="square" id="41"></div>
             <div data-color="light" class="square" id="42">
-                <button data-color="blue" class="piece f3" id="f3"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece f3" id="f3"></button>
             </div>
             <div data-color="dark" class="square" id="43"></div>
             <div data-color="light" class="square" id="44">
-                <button data-color="blue" class="piece f5" id="f5"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece f5" id="f5"></button>
             </div>
             <div data-color="dark" class="square" id="45"></div>
             <div data-color="light" class="square" id="46">
-                <button data-color="blue" class="piece f7" id="f7"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece f7" id="f7"></button>
             </div>
             <div data-color="dark" class="square" id="47"></div>
             <!---row 7-->
             <div data-color="dark" class="square" id="48"></div>
             <div data-color="light" class="square" id="49">
-                <button data-color="blue" class="piece g2" id="g2"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece g2" id="g2"></button>
             </div>
             <div data-color="dark" class="square" id="50"></div>
             <div data-color="light" class="square" id=51>
-                <button data-color="blue" class="piece g4" id="g4"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece g4" id="g4"></button>
             </div>
             <div data-color="dark" class="square" id="52"></div>
             <div data-color="light" class="square" id="53">
-                <button data-color="blue" class="piece g6" id="g6"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece g6" id="g6"></button>
             </div>
             <div data-color="dark" class="square" id="54"></div>
             <div data-color="light" class="square" id="55">
-                <button data-color="blue" class="piece g8" id="g8"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece g8" id="g8"></button>
             </div>
             <!---row 8-->
             <div data-color="light" class="square" id="56">
-                <button data-color="blue" class="piece h1" id="h1"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece h1" id="h1"></button>
             </div>
             <div data-color="dark" class="square" id="57"></div>
             <div data-color="light" class="square" id="58">
-                <button data-color="blue" class="piece h3" id="h3"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece h3" id="h3"></button>
             </div>
             <div data-color="dark" class="square" id="59"></div>
             <div data-color="light" class="square" id="60">
-                <button data-color="blue" class="piece h5" id="h5"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece h5" id="h5"></button>
             </div>
             <div data-color="dark" class="square" id="61"></div>
             <div data-color="light" class="square" id="62">
-                <button data-color="blue" class="piece h7" id="h7"></button>
+                <button aria-label="move blue piece" data-color="blue" class="piece h7" id="h7"></button>
             </div>
             <div data-color="dark" class="square" id="63"></div>
         </div>

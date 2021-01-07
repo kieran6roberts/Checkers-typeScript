@@ -6,8 +6,8 @@ const appendScoreToDOM = (): void => {
   const blueScoreElement = document.querySelector(".scoreboard__blue-score");
   
   if (redScoreElement && blueScoreElement) {
-    redScoreElement.textContent = gameControl.redPlayerPieces.toString();
-    blueScoreElement.textContent = gameControl.bluePlayerPieces.toString();
+    redScoreElement.textContent = `pieces: ${gameControl.redPlayerPieces.toString()}`;
+    blueScoreElement.textContent = `pieces: ${gameControl.bluePlayerPieces.toString()}`;
   } else throw new Error("problem locating score elements!");
 };
 

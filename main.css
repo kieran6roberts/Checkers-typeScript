@@ -5,6 +5,7 @@
     --sqr2-clr:  #eed4a5;
     --piece1-hover: #c50606;
     --piece2-hover: #0b0baf;
+    --piece-size: 4.8vh;
 }
 
 *,
@@ -16,7 +17,7 @@
 }
 
 body {
-    background-color: #333;
+    background-color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow-y: scroll;
     position: relative;
@@ -26,7 +27,7 @@ body {
     align-items: center;
     color: #868383;
     display: flex;
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 2vw, 4rem);
     height: 20vh;
     justify-content: space-evenly;
     text-align: center;
@@ -35,7 +36,13 @@ body {
 
 .scoreboard__blue,
 .scoreboard__red {
+    transition: all 150ms ease-in-out;
     padding: 0.8rem 1.6rem;
+}
+
+.scoreboard__blue--active,
+.scoreboard__red--active {
+    color: #fff;
 }
 
 .scoreboard__red-turn,
@@ -95,14 +102,14 @@ body {
 
 .squares,
 .pieces {
-    border: 4px solid #000000;
     bottom: 0;
+    border: 4px solid #333;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
     height: 80vh;
     left: 50%;
-    max-width: 750px;
+    max-height: 1400px;
     position: absolute;
     pointer-events: none;
     transform: translate(-50%, 0);
@@ -128,11 +135,11 @@ body {
     border-radius: 50%;
     border: none;
     display: flex;
-    height: 2.5rem;
+    height: var(--piece-size);
     justify-content: center;
     justify-self: center;
     pointer-events: all;
-    width: 2.5rem;
+    width: var(--piece-size);
 }
 
 .piece[data-color="blue"]:hover {background-color: var(--piece2-hover);}
@@ -141,6 +148,10 @@ body {
 .piece:focus {
     outline: none;
     border: 3px solid #fff;
+}
+
+.square:focus {
+    border: 2px solid #fff;
 }
 
 .square {
@@ -198,7 +209,7 @@ body {
 
 .player-turn {
     opacity: 100%;
-    background-color: rgb(107, 101, 101);
+    background-color: #313131;
     color: #fff;
 }
 
@@ -211,25 +222,15 @@ body {
     display: flex;
 }
 
-/* drag over */
-.overSquare {
-    opacity: 60%;
-}
-
 .valid-drop {
     opacity: 60%;
 }
 
-@media only screen and (min-width: 500px) and (min-height: 600px) {
-    .piece {
-        height: 3.5rem;
-        width: 3.5rem;
+@media only screen and (min-width: 768px) and (min-height: 550px) {
+    .pieces,
+    .squares {
+        width: 80%;
     }
-};
 
-@media only screen and (min-width: 1000px) and (min-height: 800px) {
-    .piece {
-        height: 5rem;
-        width: 5rem;
-    }
+
 };
