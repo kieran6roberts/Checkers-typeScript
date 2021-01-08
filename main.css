@@ -79,7 +79,9 @@ body {
     flex-direction: column;
     justify-content: center;
     height: 30%;
-    width: 40%;
+    max-height: 400px;
+    max-width: 800px;
+    width: 80%;
 }
 
 .win-modal__reset {
@@ -231,6 +233,4 @@ body {
     .squares {
         width: 80%;
     }
-
-
 };
