@@ -45,6 +45,7 @@ const setValidMoves = (): void => {
     const jumpSquare = squares[PIECE_INDEX + (jumpPosition / 2)];
 
     if (BOARD_STATE[PIECE_INDEX + jumpPosition] == null &&
+        checkForLightColoredSquare(jumpPosition) &&
         (PIECE_INDEX + jumpPosition < 63 && PIECE_INDEX + jumpPosition > 0 ) &&
         jumpSquare?.firstElementChild != null && jumpSquare?.firstElementChild?.getAttribute("data-color") !== gameControl.currentPlayer) {
 
