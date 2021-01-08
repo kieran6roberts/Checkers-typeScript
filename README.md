@@ -1,9 +1,7 @@
-![play-checkers logo](/public/favicon-32x32.png?raw=true "play-checkers logo")
+![play-checkers logo](/favicon-32x32.png?raw=true "play-checkers logo")
 # Checkers - TypeScript
 ![GitHub top language](https://img.shields.io/github/languages/top/kieran6roberts/Checkers-typeScript)
-![Lines of code](https://img.shields.io/tokei/lines/github/kieran6roberts/Checkers-typeScript)
 ![GitHub last commit](https://img.shields.io/github/last-commit/kieran6roberts/Checkers-typeScript)
-![dev dependencies](https://img.shields.io/david/dev/kieran6roberts/Checkers-typeScript)
 
 <br />
 
